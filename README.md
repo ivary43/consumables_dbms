@@ -9,7 +9,7 @@ Tables-
 ### Order 
 | order_id | fac_id | timestamp | status | 
 ### Order_item 
-| Order_id | Item_id | quantity | 
+| Order_id | Item_id | quantity | quantity_supplied |
 
 ## TODO List 
 - \[ ] To make models
