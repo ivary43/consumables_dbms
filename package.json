@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/ivary43/consumables_dbms#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
-    "hbs": "^4.0.1"
+    "hbs": "^4.0.1",
+    "mongoose": "^5.3.3"
   }
 }
