@@ -1,10 +1,9 @@
 
 const  env_vars = require('./Utils/Constants.js') ;
 const  express = require('express');
-const  hbs = require('hbs');
 
 let app = express();
-app.set('view engine', 'hbs');
+app.set('view engine', 'ejs');
 
 const listenPort = env_vars.PORT_NUMBER || process.env.PORT ;
 
