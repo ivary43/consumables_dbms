@@ -3,11 +3,11 @@ let  {mongoose} = require('../db/mongoose');
 var orderItemSchema = new mongoose.Schema({
     order: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Order"
+        ref: "order"
     },
     item: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Item"
+        ref: "item"
     },
     quantity: {
         type: Number,

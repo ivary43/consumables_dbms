@@ -10,12 +10,14 @@ var facultySchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    }, username : {
+    }, 
+    username : {
         type: String,
         minlength: 4,
         trim: true,
         required: true
-    }, password: {
+    }, 
+    password: {
         type: String,
         minlength: 6,
         trim: true,

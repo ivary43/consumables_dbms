@@ -3,12 +3,16 @@ let  {mongoose} = require('../db/mongoose');
 var orderSchema = new mongoose.Schema({
     faculty: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Faculty"
+        ref: "faculty"
     },
     status: {
         type: String,
         enum: ['PENDING', 'PROCESSED'],
         default: 'PENDING'
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 });
 

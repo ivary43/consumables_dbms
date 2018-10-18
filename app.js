@@ -10,10 +10,11 @@ let order = require("./routes/order");
 let orderItem = require("./routes/orderItem");
 
 let app = express();
-app.use(body_parser.json());
 app.use(body_parser.urlencoded({extended: false}));
+app.use(body_parser.json());
 
 app.set('view engine', 'ejs');
+app.use(express.static("public"));
 
 // ROUTES
 app.use(faculty);
