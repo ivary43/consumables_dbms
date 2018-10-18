@@ -1,7 +1,5 @@
 let {mongoose} = require('../db/mongoose');
 
-
-
 var facultySchema = new mongoose.Schema({
     name: {
         type: String,
@@ -29,7 +27,7 @@ var facultySchema = new mongoose.Schema({
 
 //TODO: complete this
 facultySchema.methods.isUserAdmin = function(tokenId) {
-  return false ;
+  return this.isAdmin;
 };
 
 module.exports = mongoose.model("faculty", facultySchema);
