@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+let  {mongoose} = require('../db/mongoose');
 
 var orderItemSchema = new mongoose.Schema({
     order: {

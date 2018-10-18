@@ -1,5 +1,4 @@
-var mongoose = require("mongoose");
-
+let {mongoose} = require('../db/mongoose');
 
 var itemSchema = new mongoose.Schema({
     name: {

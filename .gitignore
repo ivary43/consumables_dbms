@@ -26,8 +26,5 @@ coverage
 # Benchmarking
 benchmarks/graphs
 
-.idea/vcs.xml
-.idea/consumables_dbms.iml
-.idea/misc.xml
-.idea/modules.xml
-.idea/workspace.xml
+
+.idea/*

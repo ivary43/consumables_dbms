@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+let  {mongoose} = require('../db/mongoose');
 
 var orderSchema = new mongoose.Schema({
     faculty: {
@@ -7,8 +7,14 @@ var orderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['PENDING', 'PROCESSED']
+        enum: ['PENDING', 'PROCESSED'],
+        default: 'PENDING'
     }
 });
+
+//Todo: complete it with passport or jwt
+orderSchema.methods.findOrderByFacId = function(token) {
+
+};
 
 module.exports = mongoose.model("order", orderSchema);
