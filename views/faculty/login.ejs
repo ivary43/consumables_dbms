@@ -1,7 +1,18 @@
-<form action="/login" method="post">
-  Username:<br>
-  <input type="text" name="username" ><br>
- Password:<br>
-  <input type="text" name="password" ><br><br>
-  <input type="submit" value="Submit">
-</form>
+<% include ../partials/header %>
+<h1 style="text-align:center">Login</h1>
+
+<div style="width:30%; margin:25px auto;">
+  <form style="padding: 50px auto;" action="/login" method="post">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input class="form-control" type="text" name="username">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input class="form-control" type="password" name="password">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+
+<% include ../partials/footer %>

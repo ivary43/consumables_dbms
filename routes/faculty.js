@@ -12,18 +12,31 @@ router.post('/register', (req, res) => {
     var user = req.body.username;
     var password = req.body.password;
 
-   Faculty.register(new Faculty({username:user, name:name}), password, (err, account)=> {
-       if(err) {
-        console.log(err);
-        res.send({
-            message: "Error in registering"
-        });
-       } else {
-        res.status(201).send(account); 
-       }
+    Faculty.findOne({
+            username: user
+        })
+        .then(user => {
+            if (user) {
+                res.send({
+                    message: "Faculty already exists"
+                });
+            } else {
+                Faculty.register(new Faculty({
+                    username: user,
+                    name: name
+                }), password, (err, account) => {
+                    if (err) {
+                        console.log(err);
+                        res.send({
+                            message: "Error in registering"
+                        });
+                    } else {
+                        res.status(201).send(account);
+                    }
 
-   } );
-   
+                });
+            }
+        });
 });
 
 
@@ -38,13 +51,15 @@ router.get("/faculty", (req, res) => {
 
 //basic routes
 //TODO: for login
-router.get('/login',(req, res)=> {
+router.get('/login', (req, res) => {
     res.render("faculty/login");
 });
 
 
-router.post('/login',passport.authenticate('local', {failureRedirect:'/login',
- failureMessage:'Wrong credentials'}) , (req, res) => {
+router.post('/login', passport.authenticate('local', {
+    failureRedirect: '/login',
+    failureMessage: 'Wrong credentials'
+}), (req, res) => {
     res.redirect('/dashboard');
 });
 
@@ -56,29 +71,35 @@ router.get('/dashboard', (req, res) => {
 
     if (!isAdmin) {
 
-        Order.find({faculty: "5bc85800b4b3b22191af7037"})
-        .then(orders => {
-            res.render("faculty/dashboard", {orders: orders});
-        })
-        .catch(err => {
-            res.status(400).send({
-                errorMsg: env_vars.errMsg
+        Order.find({
+                faculty: req.user._id
+            })
+            .then(orders => {
+                res.render("faculty/dashboard", {
+                    orders: orders
+                });
+            })
+            .catch(err => {
+                res.status(400).send({
+                    errorMsg: env_vars.errMsg
+                });
+                console.log(err);
             });
-            console.log(err);
-        });
 
     } else {
         //show all the orders
         Order.find({})
-        .then(orders => {
-            res.render("faculty/dashboard", {orders: orders});
-        })
-        .catch(err => {
-            res.status(400).send({
-                errorMsg: env_vars.errMsg
+            .then(orders => {
+                res.render("faculty/dashboard", {
+                    orders: orders
+                });
+            })
+            .catch(err => {
+                res.status(400).send({
+                    errorMsg: env_vars.errMsg
+                });
+                console.log(err);
             });
-            console.log(err);
-        });
 
     }
 });

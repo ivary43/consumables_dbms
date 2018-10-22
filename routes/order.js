@@ -5,7 +5,7 @@ var Faculty = require("../models/Faculty");
 //to place an order
 router.post('/', (req, res) => {
     
-    Faculty.findById("5bc85800b4b3b22191af7037")
+    Faculty.findById(req.user._id)
         .then(fac => {
             var newOrder = new Order({
                 faculty: fac
