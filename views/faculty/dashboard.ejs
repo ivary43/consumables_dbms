@@ -1,29 +1,41 @@
 <% include ../partials/header %> 
-<div class="container">
-    <h1 class="text-center">My Orders</h1>
+<div style="margin-top: 25px" class="container">
+    
+    <div class="row">
+        
+        <div class="col-md-11">
+            <h1 class="text-center">My Orders</h1>
+        </div>
+        
+        <div class="col-md-1">
+            <a style="color: white" class="btn btn-md btn-primary">New Order</a>
+        </div>        
+        
+    </div>
 
     
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Sr No.</th>
-                <th>Order No.</th>
-                <th>Created At</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% orders.forEach((order, i) => { %>
-               <tr>
-                    <td><%= (i + 1) %> </td>
-                    <td><a href="/order/<%= order._id %>"><%= order._id %></a></td>
-                    <td><%= order.createdAt %> </td>
-                    <td><%= order.status %></td>
+    <div class="row">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Order No.</th>
+                    <th>Created At</th>
+                    <th>Status</th>
                 </tr>
-            <% }) %>            
-        </tbody>
-    </table>
-    
+            </thead>
+            <tbody>
+                <% orders.forEach((order, i) => { %>
+                   <tr>
+                        <td><%= (i + 1) %> </td>
+                        <td><a href="/order/<%= order._id %>"><%= order._id %></a></td>
+                        <td><%= order.createdAt %> </td>
+                        <td><%= order.status %></td>
+                    </tr>
+                <% }) %>            
+            </tbody>
+        </table>
+    </div>    
 </div>
 
 <% include ../partials/footer %> 

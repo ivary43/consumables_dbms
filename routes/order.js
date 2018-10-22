@@ -2,8 +2,11 @@ var router = require("express").Router();
 var Order = require("../models/Order");
 var Faculty = require("../models/Faculty");
 
+// MIDDLEWARE
+var isLoggedIn = require("../middleware/isLoggedIn");
+
 //to place an order
-router.post('/', (req, res) => {
+router.post('/', isLoggedIn, (req, res) => {
     
     Faculty.findById(req.user._id)
         .then(fac => {

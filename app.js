@@ -15,7 +15,7 @@ let orderItem = require("./routes/orderItem");
 
 let app = express();
 app.use(body_parser.urlencoded({extended: false}));
-app.use(body_parser.json());``
+app.use(body_parser.json());
 app.use(logger('dev'));
 
 app.use(require('express-session')({
@@ -34,6 +34,11 @@ passport_config.config_passport(passport);
 // passport.use(new LocalStrategy())
 
 // ROUTES
+
+app.get("/", (req, res) => {
+    res.redirect("/dashboard");
+});
+
 app.use(faculty);
 app.use("/orderItems", orderItem);
 app.use("/order", order);

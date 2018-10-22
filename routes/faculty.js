@@ -5,6 +5,10 @@ const _ = require('lodash');
 var passportLocalMongoose = require('passport-local-mongoose');
 const passport = require('passport');
 
+
+// MIDDLEWARES
+var isLoggedIn = require("../middleware/isLoggedIn");
+
 //TODO: 1) Only the admin should be able to register other faculties
 //      2) Check for duplicate entries and give error accordingly
 router.post('/register', (req, res) => {
@@ -64,7 +68,7 @@ router.post('/login', passport.authenticate('local', {
 });
 
 //orders placed on dashboard if not admin
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', isLoggedIn, (req, res) => {
     var userId = _.pick(req.body, ['fac_id']);
     // var isAdmin = Faculty.isUserAdmin(userId);
     var isAdmin = false;
