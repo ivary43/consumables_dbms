@@ -2,33 +2,28 @@ var Faculty = require('../models/Faculty');
 var Order = require("../models/Order");
 let router = require("express").Router();
 const _ = require('lodash');
+var passportLocalMongoose = require('passport-local-mongoose');
+const passport = require('passport');
 
 //TODO: 1) Only the admin should be able to register other faculties
 //      2) Check for duplicate entries and give error accordingly
 router.post('/register', (req, res) => {
     var name = req.body.name;
-    var username = req.body.username;
+    var user = req.body.username;
     var password = req.body.password;
 
-    var newFaculty = new Faculty({
-        name: name,
-        username: username,
-        password: password
-    });
-
-
-
-    newFaculty
-        .save()
-        .then(fac => {
-            res.status(201).send(fac);
-        })
-        .catch(err => {
-            console.log(err);
-            res.send({
-                message: "Error in registering"
-            });
+   Faculty.register(new Faculty({username:user, name:name}), password, (err, account)=> {
+       if(err) {
+        console.log(err);
+        res.send({
+            message: "Error in registering"
         });
+       } else {
+        res.status(201).send(account); 
+       }
+
+   } );
+   
 });
 
 
@@ -43,8 +38,14 @@ router.get("/faculty", (req, res) => {
 
 //basic routes
 //TODO: for login
-router.post('/login', (req, res) => {
+router.get('/login',(req, res)=> {
+    res.render("faculty/login");
+});
 
+
+router.post('/login',passport.authenticate('local', {failureRedirect:'/login',
+ failureMessage:'Wrong credentials'}) , (req, res) => {
+    res.redirect('/dashboard');
 });
 
 //orders placed on dashboard if not admin

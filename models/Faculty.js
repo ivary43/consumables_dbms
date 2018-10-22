@@ -1,4 +1,5 @@
 let {mongoose} = require('../db/mongoose');
+var passportLocalMongoose = require('passport-local-mongoose');
 
 var facultySchema = new mongoose.Schema({
     name: {
@@ -20,12 +21,13 @@ var facultySchema = new mongoose.Schema({
     password: {
         type: String,
         minlength: 6,
-        trim: true,
-        required: true
+        trim: true
     }
-
+    
 });
 
+//passport plugin
+facultySchema.plugin(passportLocalMongoose);
 
 //TODO: complete this
 facultySchema.methods.isUserAdmin = function(tokenId) {
