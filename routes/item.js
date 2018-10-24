@@ -4,7 +4,9 @@ let router = require("express").Router();
 //to fetch the items while ordering
 router.get('/', (req, res) => {
     Item.find().then((items) => {
-        res.send(items);
+        res.render("item/orderItem", {
+            items:items
+        });
     }, (err) => {
         res.status(400).send({
             errorMsg: env_vars.errMsg
