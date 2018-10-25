@@ -9,29 +9,45 @@
         
     </div>
 
-    
-    <div class="row">
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Sr No.</th>
-                    <th>Item Name</th>
-                    <th>Quantity Requested</th>
-                    <th>Quantity Supplied</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% items.forEach((item, i) => { %>
-                   <tr>
-                        <td><%= (i + 1) %> </td>
-                        <td><%= item.item.name %></td>
-                        <td><%= item.quantity %> </td>
-                        <td><%= item.quantitySupplied %></td>
+    <form action="/order/process" method="post">
+        <div class="row">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Sr No.</th>
+                        <th>Item Name</th>
+                        <th>Quantity Requested</th>
+                        <% if (user.isAdmin) { %>
+                            <th>Inventory</th>
+                        <% } %>   
+                        <th>Quantity Supplied</th>
                     </tr>
-                <% }) %>            
-            </tbody>
-        </table>
-    </div>    
+                </thead>
+                <tbody>
+                    <% items.forEach((item, i) => { %>
+                    <tr>
+                            <td><%= (i + 1) %> </td>
+                            <td><%= item.item.name %></td>
+                            <td><%= item.quantity %> </td>
+                            <% if (user.isAdmin) { %>
+                                <td><%= item.item.quantity %></td>
+                                <td><input type="number" class="form-control" name="quantitySupplied" min="0" value="<%= item.quantitySupplied %>" max="<%= Math.min(item.item.quantity, item.quantity) %>"></td>
+                                <input type="hidden" name="itemId" value="<%= item._id %>">
+                            <% } else { %> 
+                                <td><%= item.quantitySupplied %></td>
+                            <% } %>
+                        </tr>
+                    <% }) %>            
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="mx-auto">
+                    <button type="submit" class="btn btn-primary" class="align-middle">Submit</button>
+                </div>    
+            </div>        
+        </div>
+    </form>    
 </div>
 
 <% include ../partials/footer %> 

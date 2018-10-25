@@ -2,9 +2,14 @@ var router = require("express").Router();
 var Order = require("../models/Order");
 var Faculty = require("../models/Faculty");
 var OrderItem = require("../models/OrderItem");
+var Item = require("../models/Item");
 
 // MIDDLEWARE
 var isLoggedIn = require("../middleware/isLoggedIn");
+var isAdmin = require("../middleware/isAdmin");
+
+// UTIL METHODS
+var asyncForEach = require("../Utils/AsyncForEach");
 
 //to place an order
 router.post('/', isLoggedIn, (req, res) => {
@@ -21,7 +26,6 @@ router.post('/', isLoggedIn, (req, res) => {
             var newOrder = new Order({
                 faculty: fac
             });
-
 
             newOrder.save()
                 .then((orderRes) => {
@@ -41,6 +45,29 @@ router.post('/', isLoggedIn, (req, res) => {
                 .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
+});
+
+router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
+    let quantitySuppliedArr = req.body.quantitySupplied;
+    let itemIdArr = req.body.itemId;
+    let flagOrderSave = false;
+
+    await asyncForEach(quantitySuppliedArr, async (quantitySupplied, i) => {
+        let orderItem = await OrderItem.findById(itemIdArr[i]);
+        if (!flagOrderSave) {
+            let order = await Order.findById(orderItem.order);
+            order.status = "PROCESSED";
+            await order.save();
+            flagOrderSave = true;
+        }
+        orderItem.quantitySupplied = quantitySupplied;
+        orderItem = await orderItem.save();
+        let item = await Item.findById(orderItem.item).exec();
+        item.quantity -= orderItem.quantitySupplied;
+        await item.save();
+    });
+
+    res.redirect("/dashboard");
 });
 
 router.get("/:id", isLoggedIn, (req, res) => {
