@@ -53,6 +53,20 @@ router.get("/faculty", (req, res) => {
         .catch(err => console.log(err));
 });
 
+router.get("/faculty/:id/makeAdmin", (req, res) => {
+    Faculty.findById(req.params.id)
+        .then(faculty => {
+            faculty.isAdmin = true;
+            faculty.save()
+                .then(faculty => {
+                    res.send(faculty);
+                });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
 //basic routes
 //TODO: for login
 router.get('/login', (req, res) => {
@@ -69,18 +83,16 @@ router.post('/login', passport.authenticate('local', {
 
 //orders placed on dashboard if not admin
 router.get('/dashboard', isLoggedIn, (req, res) => {
-    var userId = _.pick(req.body, ['fac_id']);
-    // var isAdmin = Faculty.isUserAdmin(userId);
-    var isAdmin = false;
 
-    if (!isAdmin) {
+    if (!req.user.isAdmin) {
 
         Order.find({
                 faculty: req.user._id
             })
             .then(orders => {
                 res.render("faculty/dashboard", {
-                    orders: orders
+                    orders: orders,
+                    user: req.user
                 });
             })
             .catch(err => {
@@ -95,7 +107,8 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
         Order.find({})
             .then(orders => {
                 res.render("faculty/dashboard", {
-                    orders: orders
+                    orders: orders,
+                    user: req.user
                 });
             })
             .catch(err => {

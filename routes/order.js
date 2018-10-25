@@ -8,24 +8,24 @@ var isLoggedIn = require("../middleware/isLoggedIn");
 
 //to place an order
 router.post('/', isLoggedIn, (req, res) => {
-    var qty = req.body.qty ;
-    var id = req.body.id ;
-    var name = req.body.name ;
+    var qty = req.body.qty;
+    var id = req.body.id;
+    var name = req.body.name;
 
     console.log(req.body.id);
-    var orderItemsres = serializeParams(id,qty,name) ;    
+    var orderItemsres = serializeParams(id, qty, name);
     Faculty.findById(req.user._id)
         .then(fac => {
             var newOrder = new Order({
                 faculty: fac
             });
 
-            
+
             newOrder.save()
-                .then((orderRes)=>{
-                   
-                    for(index=0;index<orderItemsres.length;index++) {
-                        var newOrderItem = new OrderItem ({
+                .then((orderRes) => {
+
+                    for (index = 0; index < orderItemsres.length; index++) {
+                        var newOrderItem = new OrderItem({
                             order: orderRes._id,
                             item: orderItemsres[index].id,
                             quantity: Number(orderItemsres[index].qty)
@@ -34,7 +34,7 @@ router.post('/', isLoggedIn, (req, res) => {
                         newOrderItem.save();
 
                     }
-                    res.status(200).send({stat:"success"});
+                    res.redirect("/dashboard");
                 })
                 .catch(err => console.log(err));
         })
@@ -56,12 +56,12 @@ router.delete("/", (req, res) => {
         .then(() => res.send("Success"));
 });
 
-function serializeParams (id, qty, name) {
+function serializeParams(id, qty, name) {
     let orderObj = [];
-    let items ={};
+    let items = {};
 
-    for(let index =0 ;index<id.length ;index++) {
-        if(qty[index]!="0" ||qty[index]!="") {
+    for (let index = 0; index < id.length; index++) {
+        if (qty[index] != "0" || qty[index] != "") {
             items.id = id[index];
             items.qty = qty[index];
             items.name = name[index];
