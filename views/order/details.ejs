@@ -1,0 +1,37 @@
+<% include ../partials/header %> 
+<div style="margin-top: 25px" class="container">
+    
+    <div class="row">
+        
+        <div class="col-md-12">
+            <h1 class="text-center">Orders Details for <%= order._id %> </h1>
+        </div>     
+        
+    </div>
+
+    
+    <div class="row">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Item Name</th>
+                    <th>Quantity Requested</th>
+                    <th>Quantity Supplied</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% items.forEach((item, i) => { %>
+                   <tr>
+                        <td><%= (i + 1) %> </td>
+                        <td><%= item.item.name %></td>
+                        <td><%= item.quantity %> </td>
+                        <td><%= item.quantitySupplied %></td>
+                    </tr>
+                <% }) %>            
+            </tbody>
+        </table>
+    </div>    
+</div>
+
+<% include ../partials/footer %> 

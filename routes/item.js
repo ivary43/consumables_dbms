@@ -1,8 +1,11 @@
 var Item = require('../models/Item');
 let router = require("express").Router();
 
+// MIDDLEWARES
+var isLoggedIn = require("../middleware/isLoggedIn");
+
 //to fetch the items while ordering
-router.get('/', (req, res) => {
+router.get('/', isLoggedIn, (req, res) => {
     Item.find().then((items) => {
         res.render("item/orderItem", {
             items:items

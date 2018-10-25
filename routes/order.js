@@ -12,7 +12,9 @@ router.post('/', isLoggedIn, (req, res) => {
     var id = req.body.id;
     var name = req.body.name;
 
-    console.log(req.body.id);
+    console.log(qty, id, name);
+
+    // console.log(req.body.id);
     var orderItemsres = serializeParams(id, qty, name);
     Faculty.findById(req.user._id)
         .then(fac => {
@@ -41,6 +43,29 @@ router.post('/', isLoggedIn, (req, res) => {
         .catch(err => console.log(err));
 });
 
+router.get("/:id", isLoggedIn, (req, res) => {
+    Order.findById(req.params.id)
+        .then(order => {
+            if (order) {
+                OrderItem.find({
+                        order: order._id
+                    })
+                    .populate("item")
+                    .then(items => {
+                        res.render("order/details", {
+                            order: order,
+                            items: items,
+                            user: req.user
+                        });
+                    });
+            } else {
+                res.status(404).send({
+                    message: "Order not found"
+                });
+            }
+        });
+});
+
 // ONLY FOR DEBUGGING
 router.get("/", (req, res) => {
     Order.find({}).populate("faculty")
@@ -58,18 +83,21 @@ router.delete("/", (req, res) => {
 
 function serializeParams(id, qty, name) {
     let orderObj = [];
-    let items = {};
 
     for (let index = 0; index < id.length; index++) {
-        if (qty[index] != "0" || qty[index] != "") {
-            items.id = id[index];
-            items.qty = qty[index];
-            items.name = name[index];
-            orderObj.push(items);
+        let item = {};
+
+        if (qty[index] != "0" && qty[index] != "") {
+            item.id = id[index];
+            item.qty = qty[index];
+            item.name = name[index];
+            orderObj.push(item);
         }
     }
 
+    console.log(orderObj);
+
     return orderObj;
-};
+}
 
 module.exports = router;

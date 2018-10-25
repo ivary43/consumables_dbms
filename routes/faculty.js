@@ -67,6 +67,20 @@ router.get("/faculty/:id/makeAdmin", (req, res) => {
         });
 });
 
+router.get("/faculty/:id/removeAdmin", (req, res) => {
+    Faculty.findById(req.params.id)
+        .then(faculty => {
+            faculty.isAdmin = false;
+            faculty.save()
+                .then(faculty => {
+                    res.send(faculty);
+                });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
 //basic routes
 //TODO: for login
 router.get('/login', (req, res) => {
