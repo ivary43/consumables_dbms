@@ -15,16 +15,18 @@ router.post('/register', (req, res) => {
     var name = req.body.name;
     var user = req.body.username;
     var password = req.body.password;
+    console.log(req.body, user);
 
     Faculty.findOne({
             username: user
         })
-        .then(user => {
-            if (user) {
+        .then(res_user => {
+            if (res_user) {
                 res.send({
                     message: "Faculty already exists"
                 });
             } else {
+                // console.log("This is the user", user);
                 Faculty.register(new Faculty({
                     username: user,
                     name: name
