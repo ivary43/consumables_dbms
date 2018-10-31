@@ -55,33 +55,33 @@ router.get("/faculty", (req, res) => {
         .catch(err => console.log(err));
 });
 
-router.get("/faculty/:id/makeAdmin", (req, res) => {
-    Faculty.findById(req.params.id)
-        .then(faculty => {
-            faculty.isAdmin = true;
-            faculty.save()
-                .then(faculty => {
-                    res.send(faculty);
-                });
-        })
-        .catch(err => {
-            console.log(err);
-        });
-});
+// router.get("/faculty/:id/makeAdmin", (req, res) => {
+//     Faculty.findById(req.params.id)
+//         .then(faculty => {
+//             faculty.isAdmin = true;
+//             faculty.save()
+//                 .then(faculty => {
+//                     res.send(faculty);
+//                 });
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         });
+// });
 
-router.get("/faculty/:id/removeAdmin", (req, res) => {
-    Faculty.findById(req.params.id)
-        .then(faculty => {
-            faculty.isAdmin = false;
-            faculty.save()
-                .then(faculty => {
-                    res.send(faculty);
-                });
-        })
-        .catch(err => {
-            console.log(err);
-        });
-});
+// router.get("/faculty/:id/removeAdmin", (req, res) => {
+//     Faculty.findById(req.params.id)
+//         .then(faculty => {
+//             faculty.isAdmin = false;
+//             faculty.save()
+//                 .then(faculty => {
+//                     res.send(faculty);
+//                 });
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         });
+// });
 
 //basic routes
 //TODO: for login
@@ -96,6 +96,8 @@ router.post('/login', passport.authenticate('local', {
 }), (req, res) => {
     res.redirect('/dashboard');
 });
+
+
 
 //orders placed on dashboard if not admin
 router.get('/dashboard', isLoggedIn, (req, res) => {

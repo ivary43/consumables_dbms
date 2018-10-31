@@ -1,82 +1,44 @@
-.box {
-    width: 500px;
-    margin: 200px 0;
+.full-width-tabs > ul.nav.nav-tabs {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+.full-width-tabs > ul.nav.nav-tabs > li {
+    float: none;
+    display: table-cell;
+}
+.full-width-tabs > ul.nav.nav-tabs > li > a {
+    text-align: center;
+}
+.take-all-space-you-can{
+    width:100%;
 }
 
-.shape1{
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    float: left;
-    margin-right: -50px;
-}
-.shape2 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    margin-top: -30px;
-    float: left;
-}
-.shape3 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    margin-top: -30px;
-    float: left;
-    margin-left: -31px;
-}
-.shape4 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    margin-top: -25px;
-    float: left;
-    margin-left: -32px;
-}
-.shape5 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    float: left;
-    margin-right: -48px;
-    margin-left: -32px;
-    margin-top: -30px;
-}
-.shape6 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    float: left;
-    margin-right: -20px;
-    margin-top: -35px;
-}
-.shape7 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    float: left;
-    margin-right: -20px;
-    margin-top: -57px;
-}
-.float {
-    position: absolute;
-    z-index: 2;
+html, body {
+    padding-top: 20px;
 }
 
-.form {
-    margin-left: 145px;
+[data-role="dynamic-fields"] > .form-inline + .form-inline {
+    margin-top: 0.5em;
 }
+
+[data-role="dynamic-fields"] > .form-inline [data-role="add"] {
+    display: none;
+}
+
+[data-role="dynamic-fields"] > .form-inline:last-child [data-role="add"] {
+    display: inline-block;
+}
+
+[data-role="dynamic-fields"] > .form-inline:last-child [data-role="remove"] {
+    display: none;
+}
+
+.center-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+  }

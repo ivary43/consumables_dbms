@@ -12,6 +12,7 @@ let faculty = require("./routes/faculty");
 let item = require("./routes/item");
 let order = require("./routes/order");
 let orderItem = require("./routes/orderItem");
+let inventory = require("./routes/inventory");
 
 let app = express();
 app.use(body_parser.urlencoded({extended: false}));
@@ -44,6 +45,7 @@ app.use("/orderItems", orderItem);
 app.use("/order", order);
 app.use("/orderItem", orderItem);
 app.use("/item", item);
+app.use("/inventory", inventory);
 
 
 const listenPort = env_vars.PORT_NUMBER || process.env.PORT ;
