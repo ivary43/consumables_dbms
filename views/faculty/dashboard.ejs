@@ -9,34 +9,121 @@
         <% } else { %>
             <h1 class="text-center">My Orders</h1>
         <% } %>
-        </div>     
+        </div>
+
+
+        <div class="col-md-1">
+        <% if (user.isAdmin) { %>
+            <a style="color: white" class="btn btn-md btn-primary" href="/inventory">Inventory</a>
+        <% } else { %>
+            <a style="color: white" class="btn btn-md btn-primary" href="/item">New Order</a>
+        <% } %>
+        </div>        
         
     </div>
-    
+
+    <% if(user.isAdmin) {%> 
+            <div class="tabbable full-width-tabs" style="margin-top:25px">
+            <ul class="nav nav-tabs">
+            <li class="active take-all-space-you-can"><a data-toggle="tab" href="#all">All</a></li>
+            <li class="take-all-space-you-can"><a data-toggle="tab" href="#pending" >Pending</a></li>
+             <li class="take-all-space-you-can"><a data-toggle="tab" href="#processed" >Processed</a></li>
+            </ul>
+    <% } %>
+     <div class="tab-content" >
+    <!-- All-->
+    <div id="all" class="tab-pane fade in active" style ="margin-top:25px">
     <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Sr No.</th>
-                        <th>Order No.</th>
-                        <th>Created At</th>
-                        <th>Status</th>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Order No.</th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% let v=0 %>
+                <%  orders.forEach((order) => { %>
+                   <tr>
+                        <td><%= ++v %> </td>
+                        <td><a href="/order/<%= order._id %>"><%= order._id %></a></td>
+                        <td><%= order.createdAt %> </td>
+                        <td><%= order.status %></td>
                     </tr>
-                </thead>
-                <tbody>
-                    <% orders.forEach((order, i) => { %>
-                    <tr>
-                            <td><%= (i + 1) %> </td>
-                            <td><a href="/order/<%= order._id %>"><%= order._id %></a></td>
-                            <td><%= order.createdAt %> </td>
-                            <td><%= order.status %></td>
-                        </tr>
-                    <% }) %>            
-                </tbody>
-            </table>
+                <% }) %>            
+            </tbody>
+        </table>
+    </div>   
+    </div>
+
+     <!-- pending--> 
+   <div id="pending" class="tab-pane fade in" style ="margin-top:25px">
+    <div class="row">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Order No.</th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <% v=0 %>
+            <tbody>
+                <% orders.forEach((order) => { %> 
+                <% if(order.status === 'PENDING') {%>
+                      <tr>
+                        <td><%= ++v %> </td>
+                        <td><a href="/order/<%= order._id %>"><%= order._id %></a></td>
+                        <td><%= order.createdAt %> </td>
+                        <td><%= order.status %></td>
+                    </tr>               
+                <%} %>
+                 
+                <% }) %>            
+            </tbody>
+        </table>
+    </div>   
+    </div>
+
+     <!-- pending--> 
+   <div id="processed" class="tab-pane fade in" style ="margin-top:25px">
+    <div class="row">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Order No.</th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+              <tbody>
+              <% v=0 %>
+                <% orders.forEach((order) => { %> 
+                <% if(order.status === 'PROCESSED') {%>
+                      <tr>
+                        <td><%= ++v %> </td>
+                        <td><a href="/order/<%= order._id %>"><%= order._id %></a></td>
+                        <td><%= order.createdAt %> </td>
+                        <td><%= order.status %></td>
+                    </tr>               
+                <%} %>
+                 
+                <% }) %>            
+            </tbody>
+        </table>
+    </div>   
+    </div>
+
+    </div>
+
+
+     <% if(user.isAdmin) {%> 
         </div>
-    </div>    
+     <%} %> 
 </div>
 
 <% include ../partials/footer %> 
