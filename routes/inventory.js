@@ -11,10 +11,11 @@ var isAdmin = require("../middleware/isAdmin");
 // UTIL METHODS
 var asyncForEach = require("../Utils/AsyncForEach");
 
-router.get("/", (req, res) => {
+router.get("/", isLoggedIn, isAdmin, (req, res) => {
     Item.find().then((items) => {
         res.render("item/updateItem", {
-            items: items
+            items: items,
+            user: req.user
         });
     }, (err) => {
         res.status(400).send({

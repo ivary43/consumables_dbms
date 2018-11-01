@@ -14,10 +14,6 @@
     width:100%;
 }
 
-html, body {
-    padding-top: 20px;
-}
-
 [data-role="dynamic-fields"] > .form-inline + .form-inline {
     margin-top: 0.5em;
 }
