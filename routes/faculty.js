@@ -89,6 +89,10 @@ router.get('/login', (req, res) => {
     res.render("faculty/login");
 });
 
+router.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect("/dashboard");
+});
 
 router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
