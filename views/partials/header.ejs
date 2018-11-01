@@ -34,7 +34,7 @@
           <ul class="nav navbar-nav">
             <% if (typeof user !== 'undefined' && user.isAdmin) { %>
               <li><a href="/inventory">Inventory</a></li>
-            <% } else { %>
+            <% } else if (typeof user !== 'undefined') { %>
               <li><a href="/item">New Order</a></li>
             <% } %>
           </ul>
