@@ -2,6 +2,7 @@ let router = require("express").Router();
 var Item = require('../models/Item');
 var isLoggedIn = require("../middleware/isLoggedIn");
 let _ = require("lodash");
+var Notification = require("../models/Notification");
 
 
 // MIDDLEWARE
@@ -26,7 +27,6 @@ router.get("/", isLoggedIn, isAdmin, (req, res) => {
 });
 
 router.post("/", isLoggedIn, isAdmin, (req, res) => {
-    console.log("/", req.body);
     let ids = req.body.id;
     let quantities = req.body.qty;
     let processed = 0;
@@ -59,8 +59,9 @@ router.post("/", isLoggedIn, isAdmin, (req, res) => {
 })
 
 router.post("/add", isLoggedIn, isAdmin, async (req, res) => {
+    let items = serialiseParams([].concat(req.body.name), [].concat(req.body.qty));
 
-    let items = serialiseParams(req.body.name, req.body.qty);
+    console.log(items);
 
     await asyncForEach(items, async (item, i) => {
         let newItem = new Item({
@@ -69,6 +70,14 @@ router.post("/add", isLoggedIn, isAdmin, async (req, res) => {
         });
 
         await newItem.save();
+        var notifText = "New item - " + newItem.name + " has been added to the inventory";
+        var newNotification = new Notification({
+            subject: "ITEM_ADD",
+            text: notifText,
+            isAll: true
+        });
+
+        await newNotification.save();
     });
 
     res.status(200).send({

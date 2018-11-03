@@ -3,6 +3,7 @@ var Order = require("../models/Order");
 var Faculty = require("../models/Faculty");
 var OrderItem = require("../models/OrderItem");
 var Item = require("../models/Item");
+var Notification = require("../models/Notification");
 
 // MIDDLEWARE
 var isLoggedIn = require("../middleware/isLoggedIn");
@@ -48,8 +49,8 @@ router.post('/', isLoggedIn, (req, res) => {
 });
 
 router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
-    let quantitySuppliedArr = req.body.quantitySupplied;
-    let itemIdArr = req.body.itemId;
+    let quantitySuppliedArr = [].concat(req.body.quantitySupplied);
+    let itemIdArr = [].concat(req.body.itemId);
     let flagOrderSave = false;
 
     await asyncForEach(quantitySuppliedArr, async (quantitySupplied, i) => {
@@ -59,6 +60,14 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
             order.status = "PROCESSED";
             await order.save();
             flagOrderSave = true;
+            var notifText = "Your Order No. " + order._id + " has been processed on " + (new Date().toLocaleDateString());
+            var newNotification = new Notification({
+                subject: "ORDER",
+                text: notifText,
+                target: order.faculty
+            });
+
+            await newNotification.save();
         }
         orderItem.quantitySupplied = quantitySupplied;
         orderItem = await orderItem.save();

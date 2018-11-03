@@ -4,6 +4,7 @@ let router = require("express").Router();
 const _ = require('lodash');
 var passportLocalMongoose = require('passport-local-mongoose');
 const passport = require('passport');
+var Notification = require("../models/Notification");
 
 
 // MIDDLEWARES
@@ -15,7 +16,6 @@ router.post('/register', (req, res) => {
     var name = req.body.name;
     var user = req.body.username;
     var password = req.body.password;
-    console.log(req.body, user);
 
     Faculty.findOne({
             username: user
@@ -26,7 +26,6 @@ router.post('/register', (req, res) => {
                     message: "Faculty already exists"
                 });
             } else {
-                // console.log("This is the user", user);
                 Faculty.register(new Faculty({
                     username: user,
                     name: name
@@ -84,7 +83,6 @@ router.get("/faculty", (req, res) => {
 // });
 
 //basic routes
-//TODO: for login
 router.get('/login', (req, res) => {
     res.render("faculty/login");
 });
@@ -112,10 +110,36 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
                 faculty: req.user._id
             })
             .then(orders => {
-                res.render("faculty/dashboard", {
-                    orders: orders,
-                    user: req.user
-                });
+
+                Notification.find({
+                        target: req.user._id
+                    })
+                    .sort([
+                        ['createdAt', -1]
+                    ])
+                    .then(targetNotification => {
+                        Notification.find({
+                                isAll: true
+                            })
+                            .sort([
+                                ['createdAt', -1]
+                            ])
+                            .then(allNotification => {
+                                var totalNotification = targetNotification.concat(allNotification);
+                                totalNotification.sort((a, b) => {
+                                    if (b > a)
+                                        return 1;
+
+                                    return -1;
+                                });
+
+                                res.render("faculty/dashboard", {
+                                    orders: orders,
+                                    user: req.user,
+                                    notifications: totalNotification
+                                });
+                            });
+                    });
             })
             .catch(err => {
                 res.status(400).send({
