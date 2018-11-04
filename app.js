@@ -8,6 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const logger = require('morgan');
 const  passport_config = require('./config/passport_config');
 
+
 let faculty = require("./routes/faculty");
 let item = require("./routes/item");
 let order = require("./routes/order");
@@ -34,6 +35,7 @@ app.use(express.static("public"));
 passport_config.config_passport(passport);
 // passport.use(new LocalStrategy())
 
+
 // ROUTES
 
 app.get("/", (req, res) => {
@@ -47,6 +49,15 @@ app.use("/orderItem", orderItem);
 app.use("/item", item);
 app.use("/inventory", inventory);
 
+//404
+app.use(function (req, res, next) {
+    res.status(404);
+    // respond with html page
+    res.render('error/error_404', { url: req.url });
+    // res.send("no");
+    return;
+  });
+  
 
 const listenPort = env_vars.PORT_NUMBER || process.env.PORT ;
 

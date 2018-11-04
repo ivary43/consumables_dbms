@@ -6,7 +6,6 @@ var passportLocalMongoose = require('passport-local-mongoose');
 const passport = require('passport');
 var Notification = require("../models/Notification");
 
-
 // MIDDLEWARES
 var isLoggedIn = require("../middleware/isLoggedIn");
 

@@ -13,14 +13,14 @@
 
     </div>
 
-    <% if(user.isAdmin) {%>
+  
     <div class="tabbable full-width-tabs" style="margin-top:25px">
         <ul class="nav nav-tabs">
             <li class="active take-all-space-you-can"><a data-toggle="tab" href="#all">All</a></li>
             <li class="take-all-space-you-can"><a data-toggle="tab" href="#pending">Pending</a></li>
             <li class="take-all-space-you-can"><a data-toggle="tab" href="#processed">Processed</a></li>
         </ul>
-        <% } %>
+   
         <div class="tab-content">
             <!-- All-->
             <div id="all" class="tab-pane fade in active" style="margin-top:25px">
@@ -136,9 +136,7 @@
         </div>
 
 
-        <% if(user.isAdmin) {%>
-    </div>
-    <%} %>
+    
 
     <% if (!user.isAdmin) { %>
 
