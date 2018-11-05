@@ -152,11 +152,12 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
 
     } else {
         //show all the orders
-        Order.find({})
+        Order.find({}).populate("faculty")
             .sort([
                 ['createdAt', -1]
             ])
             .then(orders => {
+            //    console.log(orders);
                 res.render("faculty/dashboard", {
                     orders: orders,
                     user: req.user
