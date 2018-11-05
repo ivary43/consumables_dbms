@@ -13,14 +13,14 @@
 
     </div>
 
-  
+
     <div class="tabbable full-width-tabs" style="margin-top:25px">
         <ul class="nav nav-tabs">
             <li class="active take-all-space-you-can"><a data-toggle="tab" href="#all">All</a></li>
             <li class="take-all-space-you-can"><a data-toggle="tab" href="#pending">Pending</a></li>
             <li class="take-all-space-you-can"><a data-toggle="tab" href="#processed">Processed</a></li>
         </ul>
-   
+
         <div class="tab-content">
             <!-- All-->
             <div id="all" class="tab-pane fade in active" style="margin-top:25px">
@@ -35,6 +35,9 @@
                                 <th>Order By</th>
                                 <%}%>
                                 <th>Status</th>
+                                <% if(!user.isAdmin) {%>
+                                <th>Delete</th>
+                                <%}%>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,13 +56,25 @@
                                     <%= order.createdAt %>
                                 </td>
                                 <% if(user.isAdmin){%>
-                                    <td>
-                                  <%= order.faculty.name %>
-                                  </td>
-                                 <%}%>
+                                <td>
+                                    <%= order.faculty.name %>
+                                </td>
+                                <%}%>
                                 <td>
                                     <%= order.status %>
                                 </td>
+                                <% if(!user.isAdmin && order.status !== 'PROCESSED') {%>
+                                <td>
+                                    <button class="btn btn-danger btn-md" onclick="deletePressed('<%= order._id %>')">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </td>
+                                <%}%>
+                                <% if(!user.isAdmin && order.status === 'PROCESSED') {%>
+                                <td>
+                                   
+                                </td>
+                                <%}%>
                             </tr>
                             <% }) %>
                         </tbody>
@@ -76,10 +91,13 @@
                                 <th>Sr No.</th>
                                 <th>Order No.</th>
                                 <th>Created At</th>
-                                 <% if(user.isAdmin) {%>
+                                <% if(user.isAdmin) {%>
                                 <th>Order By</th>
                                 <%}%>
                                 <th>Status</th>
+                                <% if(!user.isAdmin) {%>
+                                <th>Delete</th>
+                                <%}%>
                             </tr>
                         </thead>
                         <% v=0 %>
@@ -95,14 +113,21 @@
                                 <td>
                                     <%= order.createdAt %>
                                 </td>
-                                    <% if(user.isAdmin){%>
-                                    <td>
-                                  <%= order.faculty.name %>
-                                  </td>
-                                 <%}%>
+                                <% if(user.isAdmin){%>
+                                <td>
+                                    <%= order.faculty.name %>
+                                </td>
+                                <%}%>
                                 <td>
                                     <%= order.status %>
                                 </td>
+                                <% if(!user.isAdmin) {%>
+                                <td>
+                                    <button class="btn btn-danger btn-md">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </td>
+                                <%}%>
                             </tr>
                             <%} %>
 
@@ -121,10 +146,13 @@
                                 <th>Sr No.</th>
                                 <th>Order No.</th>
                                 <th>Created At</th>
-                                 <% if(user.isAdmin) {%>
+                                <% if(user.isAdmin) {%>
                                 <th>Order By</th>
                                 <%}%>
                                 <th>Status</th>
+                                <% if(!user.isAdmin) {%>
+                                <th>Delete</th>
+                                <%}%>
                             </tr>
                         </thead>
                         <tbody>
@@ -140,14 +168,21 @@
                                 <td>
                                     <%= order.createdAt %>
                                 </td>
-                                    <% if(user.isAdmin){%>
-                                    <td>
-                                  <%= order.faculty.name %>
-                                  </td>
-                                 <%}%>
+                                <% if(user.isAdmin){%>
+                                <td>
+                                    <%= order.faculty.name %>
+                                </td>
+                                <%}%>
                                 <td>
                                     <%= order.status %>
                                 </td>
+                                <% if(!user.isAdmin) {%>
+                                <td>
+                                    <button class="btn btn-danger btn-md">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </td>
+                                <%}%>
                             </tr>
                             <%} %>
 
@@ -160,53 +195,56 @@
         </div>
 
 
-    
 
-    <% if (!user.isAdmin) { %>
 
-    <div class="row">
+        <% if (!user.isAdmin) { %>
 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h1 class="text-center">Notification</h1>
+        <div class="row">
 
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>
-                            Description
-                        </th>
-                        <th>
-                            Created At
-                        </th>
-                    </tr>
-                </thead>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h1 class="text-center">Notification</h1>
 
-                <tbody>
-                    <% notifications.forEach(notification => { %>
-                    <tr>
-                        <td>
-                            <% if (notification.subject === 'ORDER') { %>
-                            <%= notification.text.substring(0, 15) %>
-                            <a href="/order/<%= notification.text.substring(15, 39) %>">
-                                <%= notification.text.substring(15, 39) %>
-                            </a>
-                            <%= notification.text.substring(39) %>
-                            <% } else { %>
-                            <%= notification.text %>
-                            <% } %>
-                        </td>
-                        <td>
-                            <%= notification.createdAt %>
-                        </td>
-                    </tr>
-                    <% }) %>
-                </tbody>
-            </table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Created At
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% notifications.forEach(notification => { %>
+                        <tr>
+                            <td>
+                                <% if (notification.subject === 'ORDER') { %>
+                                <%= notification.text.substring(0, 15) %>
+                                <a href="/order/<%= notification.text.substring(15, 39) %>">
+                                    <%= notification.text.substring(15, 39) %>
+                                </a>
+                                <%= notification.text.substring(39) %>
+                                <% } else { %>
+                                <%= notification.text %>
+                                <% } %>
+                            </td>
+                            <td>
+                                <%= notification.createdAt %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
+        <% } %>
     </div>
 
-    <% } %>
-</div>
 
-<% include ../partials/footer %>
+    <script src="./js/dashboard.js"></script>
+
+    <% include ../partials/footer %>

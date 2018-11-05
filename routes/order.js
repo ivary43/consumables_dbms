@@ -48,6 +48,31 @@ router.post('/', isLoggedIn, (req, res) => {
         .catch(err => console.log(err));
 });
 
+router.delete("/:id", isLoggedIn, (req, res) => {
+
+    Order.findById(req.params.id)
+        .then(order => {
+            if (!order) {
+                res.status(404).send({
+                    message: "Order not found"
+                });
+            } else if (order.status === "PROCESSED") {
+                res.status(403).send("Cannot delete processed order");
+            } else {
+                Order.findByIdAndDelete(req.params.id)
+                    .then(() => {
+                        res.send("Order " + req.params.id + " deleted successfully.");
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
 router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
     let quantitySuppliedArr = [].concat(req.body.quantitySupplied);
     let itemIdArr = [].concat(req.body.itemId);
