@@ -108,6 +108,9 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
         Order.find({
                 faculty: req.user._id
             })
+            .sort([
+                ['createdAt', -1]
+            ])
             .then(orders => {
 
                 Notification.find({
@@ -150,6 +153,9 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
     } else {
         //show all the orders
         Order.find({})
+            .sort([
+                ['createdAt', -1]
+            ])
             .then(orders => {
                 res.render("faculty/dashboard", {
                     orders: orders,
