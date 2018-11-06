@@ -11,3 +11,21 @@ function deletePressed(order_id) {
         });
     }
 }
+
+$(document).ready(function () {
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        $.fn.dataTable.tables({
+            visible: true,
+            api: true
+        }).columns.adjust();
+    });
+
+    $('table.table').DataTable({
+        "scrollY": "70vh",
+        "scrollCollapse": true,
+        "searching": false
+    });
+
+    $('.dataTables_length').addClass('bs-select');
+});
