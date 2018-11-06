@@ -16,7 +16,7 @@ var isAdmin = require("../middleware/isAdmin");
 // UTIL METHODS
 var asyncForEach = require("../Utils/AsyncForEach");
 
-var placedOrderId ;
+var placedOrderId;
 //to place an order
 router.post('/', isLoggedIn, (req, res) => {
     var qty = req.body.qty;
@@ -49,7 +49,7 @@ router.post('/', isLoggedIn, (req, res) => {
                     let mailOptions = createOrderRegisteredMailOption(req.user.email);
                     console.log(mailOptions);
                     console.log(mailer.transporter);
-                    mailer.transporter.sendMail(mailOptions, (error, info)=> {
+                    mailer.transporter.sendMail(mailOptions, (error, info) => {
                         if (error) {
                             return console.log(error);
                         }
@@ -94,7 +94,7 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
     let quantitySuppliedArr = [].concat(req.body.quantitySupplied);
     let itemIdArr = [].concat(req.body.itemId);
     let itemNameArr = [].concat(req.body.itemName);
-    let orderProcessed = serializeParams(itemIdArr, quantitySuppliedArr,itemNameArr );
+    let orderProcessed = serializeParams(itemIdArr, quantitySuppliedArr, itemNameArr);
 
     let flagOrderSave = false;
     console.log(req.body);
@@ -103,6 +103,11 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
         let orderItem = await OrderItem.findById(itemIdArr[i]);
         if (!flagOrderSave) {
             let order = await Order.findById(orderItem.order);
+            if (order.status === "PROCESSED") {
+                res.status(403).send({
+                    message: "Order already processed"
+                });
+            }
             order.status = "PROCESSED";
             await order.save();
             flagOrderSave = true;
@@ -112,7 +117,7 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
                 text: notifText,
                 target: order.faculty
             });
-           process_order_id = order._id ;
+            process_order_id = order._id;
             await newNotification.save();
         }
         orderItem.quantitySupplied = quantitySupplied;
@@ -122,17 +127,19 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
         await item.save();
     });
 
- 
-   
+
+
     //render the html file
-    ejs.renderFile(__dirname+"/../views/template/mail_template.ejs",{ordersProcessed: orderProcessed}, (err, data)=> {
-        if(err) {
+    ejs.renderFile(__dirname + "/../views/template/mail_template.ejs", {
+        ordersProcessed: orderProcessed
+    }, (err, data) => {
+        if (err) {
             console.log(err);
         } else {
-            mailProcessedOption = createOrderProcessedMailOption(req.user.email,process_order_id, data);
+            mailProcessedOption = createOrderProcessedMailOption(req.user.email, process_order_id, data);
             console.log(mailProcessedOption);
             console.log(mailer.transporter);
-            mailer.transporter.sendMail(mailProcessedOption, (error, info)=> {
+            mailer.transporter.sendMail(mailProcessedOption, (error, info) => {
                 if (error) {
                     return console.log(error);
                 }
@@ -206,25 +213,25 @@ function serializeParams(id, qty, name) {
 }
 
 //creates the mail options accordingly 
- function createOrderRegisteredMailOption(user_email) {
+function createOrderRegisteredMailOption(user_email) {
     let var_mailOptions = {
         from: '<consumables@iitp.ac.in>', // sender address
         to: user_email, // list of receivers
-        subject: 'Your order '+placedOrderId+' has successfully been placed', // Subject line
+        subject: 'Your order ' + placedOrderId + ' has successfully been placed', // Subject line
         text: 'Your order has successfully been placed. You will get a confirmation mail once order has been processed. \n Thank you! \n\n\n  Manish Kumar \nIIT Patna \n Consumables pic'
     }
     return var_mailOptions;
 
- }
+}
 
- function createOrderProcessedMailOption(user_email, orderID, data) {
+function createOrderProcessedMailOption(user_email, orderID, data) {
     let pr_mailOptions = {
         from: '<consumables@iitp.ac.in>', // sender address
         to: user_email, // list of receivers
-        subject: 'Your order '+orderID+' has successfully be processed', // Subject line
+        subject: 'Your order ' + orderID + ' has successfully be processed', // Subject line
         html: data
     }
     return pr_mailOptions;
- }
+}
 
 module.exports = router;

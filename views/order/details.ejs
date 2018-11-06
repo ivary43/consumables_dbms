@@ -31,7 +31,7 @@
                             <td><%= item.quantity %> </td>
                             <% if (user.isAdmin) { %>
                                 <td><%= item.item.quantity %></td>
-                                <td><input type="number" class="form-control" name="quantitySupplied" min="0" value="<%= item.quantitySupplied %>" max="<%= Math.min(item.item.quantity, item.quantity) %>"></td>
+                                <td><input type="number" class="form-control" name="quantitySupplied" min="0" value="<%= item.quantitySupplied %>" max="<%= Math.min(item.item.quantity, item.quantity) %>" <%= order.status === 'PROCESSED' ? 'disabled' : '' %>></td>
                                 <input type="hidden" name="itemId" value="<%= item._id %>">
                                 <input type="hidden" name="itemName" value="<%= item.item.name %>">
                             <% } else { %> 
@@ -42,7 +42,7 @@
                 </tbody>
             </table>
 
-          <% if (user.isAdmin) { %>
+          <% if (user.isAdmin && order.status !== "PROCESSED") { %>
             <div class="row">
                 <div class="col-12 text-center">
                     <button type="submit" class="btn btn-primary" class="align-middle">Submit</button>
