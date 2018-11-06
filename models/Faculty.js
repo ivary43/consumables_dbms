@@ -22,6 +22,11 @@ var facultySchema = new mongoose.Schema({
         type: String,
         minlength: 6,
         trim: true
+    }, email: {
+        type: String, 
+        minlength: 3, 
+        trim: true,
+        required: true
     }
     
 });
