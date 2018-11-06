@@ -10,7 +10,7 @@ const env_vars = require('./Constants');
         secure: false, // true for 465, false for other ports
         auth: {
             user: 'manish.cs16@iitp.ac.in', // generated ethereal user
-            pass: 'Awe7esai' // generated ethereal password
+            pass: '' // generated ethereal password
         }
     });
 
