@@ -33,6 +33,7 @@
                                 <td><%= item.item.quantity %></td>
                                 <td><input type="number" class="form-control" name="quantitySupplied" min="0" value="<%= item.quantitySupplied %>" max="<%= Math.min(item.item.quantity, item.quantity) %>"></td>
                                 <input type="hidden" name="itemId" value="<%= item._id %>">
+                                <input type="hidden" name="itemName" value="<%= item.item.name %>">
                             <% } else { %> 
                                 <td><%= item.quantitySupplied %></td>
                             <% } %>

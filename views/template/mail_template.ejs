@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Orders Processed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+        <p> Your order has successfully been processed. Please check the dashboard for further details.</p>
+        <p>Processed orders are as following -</p>
+        <div class="row">
+            <table style="border: 1px solid black;border-collapse: collapse;">
+                <thead >
+                    <tr>
+                        <th style="border: 1px solid black; border-collapse: collapse;">Sr No. </th>
+                        <th style="border: 1px solid black; border-collapse: collapse;">Item </th>
+                        <th style="border: 1px solid black; border-collapse: collapse;">Quantity Supplied </th>
+                    </tr>
+                </thead>
+                <tbody> 
+                <% ordersProcessed.forEach((item,i)=> {%>
+                    <tr> 
+                        <td style="border: 1px solid black; border-collapse: collapse;"><%= (i + 1) %> </td>
+                        <td style="border: 1px solid black; border-collapse: collapse;"><%= item.name %></td>
+                         <td style="border: 1px solid black; border-collapse: collapse;"><%= item.qty %> </td>   
+                    </tr>
+                <% })%></tbody>
+            </table>
+        </div>
+        
+        <p>Manish Kumar</p>
+        <p>Pic consumables</p>
+        <p>IIT Patna</p>
+
+</body>
+</html>
