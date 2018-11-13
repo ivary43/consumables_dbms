@@ -83,7 +83,11 @@ router.get("/faculty", (req, res) => {
 
 //basic routes
 router.get('/login', (req, res) => {
-    res.render("faculty/login");
+    if(req.isAuthenticated()) {
+        res.redirect("/dashboard");
+    } else {
+        res.render("faculty/login");
+   }
 });
 
 router.get('/logout', (req, res) => {
