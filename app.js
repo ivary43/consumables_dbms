@@ -59,7 +59,7 @@ app.use(function (req, res, next) {
   });
   
 
-const listenPort = env_vars.PORT_NUMBER || process.env.PORT ;
+const listenPort = process.env.PORT  || env_vars.PORT_NUMBER ;
 
 //server setup
 app.listen(listenPort, ()=>{
