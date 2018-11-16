@@ -131,7 +131,7 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
                             }
                             orderDetails[orderItem.order].push(orderItem);
                         });
-                        
+
                         res.render("faculty/dashboard", {
                             orders: orders,
                             user: req.user,
@@ -160,11 +160,34 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
                 ['createdAt', -1]
             ])
             .then(orders => {
-                //    console.log(orders);
-                res.render("faculty/dashboard", {
-                    orders: orders,
-                    user: req.user
-                });
+                
+                let orderDetails = {};
+
+                OrderItem.find({})
+                    .populate("item")
+                    .then(orderItems => {
+
+                        orderItems.forEach(orderItem => {
+                            console.log(orderItem.order);
+                            if(!_.has(orderDetails, orderItem.order)) {
+                                orderDetails[orderItem.order] = [];
+                            }
+                            orderDetails[orderItem.order].push(orderItem);
+                        });
+
+                        res.render("faculty/dashboard", {
+                            orders: orders,
+                            user: req.user,
+                            orderDetails: orderDetails,
+                            notifications: []
+                        });
+                    })
+                    .catch(err => {
+                        res.status(400).send({
+                            errorMsg: env_vars.errMsg
+                        });
+                        console.log(err);
+                    });
             })
             .catch(err => {
                 res.status(400).send({

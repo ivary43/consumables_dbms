@@ -92,12 +92,28 @@ router.delete("/:id", isLoggedIn, (req, res) => {
 router.post("/:id/confirm", isLoggedIn, (req, res) => {
 
     Order.findById(req.params.id)
-    .then(order => {
-
-    })
-    .catch(err => {
-        console.log(err);
-    });
+        .then(order => {
+            if (!order) {
+                res.status(404).send({
+                    message: "Order not found"
+                });
+            } else if (order.status !== "PROCESSED") {
+                res.status(403).send("Only processed orders can be confirmed");
+            } else {
+                order.confirmedAt = new Date();
+                order.status = "DELIVERED";
+                order.save()
+                    .then(order => {
+                        res.send("Order " + req.params.id + " delivery confirmed successfully.");
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
 });
 
 // to update the order {User -> admin} 

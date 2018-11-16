@@ -38,7 +38,8 @@ $(document).ready(function () {
     $('table.table').DataTable({
         "scrollY": "70vh",
         "scrollCollapse": true,
-        "searching": false
+        "searching": false,
+        "pageLength": 50
     });
 
     $('.dataTables_length').addClass('bs-select');
