@@ -19,9 +19,11 @@
   "homepage": "https://github.com/ivary43/consumables_dbms#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-fileupload": "^1.0.0",
     "express-session": "^1.15.6",
     "flash-express": "^1.0.4",
     "hbs": "^4.0.1",

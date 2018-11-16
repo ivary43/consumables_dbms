@@ -46,6 +46,16 @@
             <% } %>
           </ul>
 
+             <ul class="nav navbar-nav">
+            <% if (typeof user !== 'undefined' && user.isAdmin) { %>
+              <li><a href="/bills">Upload Bills</a></li>
+            <% } %>
+          </ul>
+            <ul class="nav navbar-nav">
+            <% if (typeof user !== 'undefined' && user.isAdmin) { %>
+              <li><a href="/bills/view">View Bills</a></li>
+            <% } %>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <% if (typeof user !== 'undefined') { %>
               <li><a href="/logout">Log out</a></li>

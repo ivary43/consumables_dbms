@@ -7,19 +7,22 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const logger = require('morgan');
 const  passport_config = require('./config/passport_config');
-
+const fileUpload = require('express-fileupload');
+var flash = require('connect-flash');
 
 let faculty = require("./routes/faculty");
 let item = require("./routes/item");
 let order = require("./routes/order");
 let orderItem = require("./routes/orderItem");
 let inventory = require("./routes/inventory");
+let bills = require("./routes/bills");
 
 let app = express();
 app.use(body_parser.urlencoded({extended: false}));
 app.use(body_parser.json());
 app.use(logger('dev'));
-
+app.use(fileUpload());
+app.use(flash());
 app.use(require('express-session')({
     secret: env_vars.secretCode,
     resave: false,
@@ -48,6 +51,7 @@ app.use("/order", order);
 app.use("/orderItem", orderItem);
 app.use("/item", item);
 app.use("/inventory", inventory);
+app.use("/bills", bills);
 
 //404
 app.use(function (req, res, next) {

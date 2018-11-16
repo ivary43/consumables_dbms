@@ -1,7 +1,7 @@
 'use strict';
 const nodemailer = require('nodemailer');
 const env_vars = require('./Constants');
-// var jsonPass = require('../config/config_val');
+var jsonPass = require('../config/config_val');
 
 // Only needed if you don't have a real mail account for testing
 
@@ -12,7 +12,7 @@ const env_vars = require('./Constants');
         secure: false, // true for 465, false for other ports
         auth: {
             user: 'manish.cs16@iitp.ac.in', // generated ethereal user
-            pass: process.env.mail_pass// generated ethereal password
+            pass: jsonPass.password// generated ethereal password
         }
     });
 

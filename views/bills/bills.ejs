@@ -1,0 +1,24 @@
+<% include ../partials/header %>
+<div class="container"> 
+
+<form enctype="multipart/form-data" action="/bills" method="POST">
+<div class="form-group">
+    <label for="topic">Topic</label>
+    <input type="text" class="form-control" id="topic" placeholder="Enter topic" name="topic">
+</div>
+
+<div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" rows="5" id="description"placeholder="Enter description" name="description"></textarea> 
+</div>
+
+<div class="form-group">
+<label for="file_upload">File Upload</label>
+<input type="file" class="form-control-file" id="file_upload" accept=".pdf" name="file_pdf">
+</div>
+
+<button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+</div>
+<% include ../partials/footer %>
