@@ -89,6 +89,17 @@ router.delete("/:id", isLoggedIn, (req, res) => {
         });
 });
 
+router.post("/:id/confirm", isLoggedIn, (req, res) => {
+
+    Order.findById(req.params.id)
+    .then(order => {
+
+    })
+    .catch(err => {
+        console.log(err);
+    });
+});
+
 // to update the order {User -> admin} 
 router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
     let quantitySuppliedArr = [].concat(req.body.quantitySupplied);

@@ -12,6 +12,20 @@ function deletePressed(order_id) {
     }
 }
 
+function confirmPressed(order_id) {
+    var answer = confirm("Are you sure you want to mark this order as delivered?");
+    if (answer) {
+        $.ajax({
+            type: "POST",
+            url: "/order/" + order_id + "/confirm",
+            success: function (msg) {
+                location.reload();
+                alert(msg);
+            }
+        });
+    }
+}
+
 $(document).ready(function () {
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

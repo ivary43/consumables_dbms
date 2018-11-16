@@ -1,5 +1,6 @@
 var Faculty = require('../models/Faculty');
 var Order = require("../models/Order");
+var OrderItem = require("../models/OrderItem");
 let router = require("express").Router();
 const _ = require('lodash');
 var passportLocalMongoose = require('passport-local-mongoose');
@@ -83,11 +84,11 @@ router.get("/faculty", (req, res) => {
 
 //basic routes
 router.get('/login', (req, res) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         res.redirect("/dashboard");
     } else {
         res.render("faculty/login");
-   }
+    }
 });
 
 router.get('/logout', (req, res) => {
@@ -117,34 +118,32 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
             ])
             .then(orders => {
 
-                Notification.find({
-                        target: req.user._id
+                let orderDetails = {};
+
+                OrderItem.find({})
+                    .populate("item")
+                    .then(orderItems => {
+
+                        orderItems.forEach(orderItem => {
+                            console.log(orderItem.order);
+                            if(!_.has(orderDetails, orderItem.order)) {
+                                orderDetails[orderItem.order] = [];
+                            }
+                            orderDetails[orderItem.order].push(orderItem);
+                        });
+                        
+                        res.render("faculty/dashboard", {
+                            orders: orders,
+                            user: req.user,
+                            orderDetails: orderDetails,
+                            notifications: []
+                        });
                     })
-                    .sort([
-                        ['createdAt', -1]
-                    ])
-                    .then(targetNotification => {
-                        Notification.find({
-                                isAll: true
-                            })
-                            .sort([
-                                ['createdAt', -1]
-                            ])
-                            .then(allNotification => {
-                                var totalNotification = targetNotification.concat(allNotification);
-                                totalNotification.sort((a, b) => {
-                                    if (b > a)
-                                        return 1;
-
-                                    return -1;
-                                });
-
-                                res.render("faculty/dashboard", {
-                                    orders: orders,
-                                    user: req.user,
-                                    notifications: totalNotification
-                                });
-                            });
+                    .catch(err => {
+                        res.status(400).send({
+                            errorMsg: env_vars.errMsg
+                        });
+                        console.log(err);
                     });
             })
             .catch(err => {
@@ -161,7 +160,7 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
                 ['createdAt', -1]
             ])
             .then(orders => {
-            //    console.log(orders);
+                //    console.log(orders);
                 res.render("faculty/dashboard", {
                     orders: orders,
                     user: req.user

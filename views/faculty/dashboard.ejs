@@ -30,7 +30,7 @@
                             <tr>
                                 <!-- <th>Sr No.</th> -->
                                 <th>Order No.</th>
-                                <!-- <th>Order Summary</th> -->
+                                <th>Order Summary</th>
                                 <th>Created At</th>
                                 <th>Processed At</th>
                                 <th>Confirmed At</th>
@@ -54,6 +54,15 @@
                                     <a href="/order/<%= order._id %>">
                                         <%= order.orderId %>
                                     </a>
+                                </td>
+                                <td>
+                                    <ul>
+                                       <% orderDetails[order._id].forEach(item => { %>
+                                            <li>
+                                                <%= item.item.name %> 
+                                            </li>
+                                       <% }) %>
+                                    </ul>
                                 </td>
                                 <td>
                                     <%= order.createdAt.toLocaleDateString() %>
