@@ -40,6 +40,12 @@
             <% } %>
           </ul>
     
+          <ul class="nav navbar-nav navbar-center">
+            <% if (typeof user !== 'undefined') { %>
+            <li><a href="#">Hello, <%= user.name %> </a></li>
+            <% } %>
+          </ul>
+
           <ul class="nav navbar-nav navbar-right">
             <% if (typeof user !== 'undefined') { %>
               <li><a href="/logout">Log out</a></li>
