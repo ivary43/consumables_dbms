@@ -1,4 +1,9 @@
-let  {mongoose} = require('../db/mongoose');
+let {
+    mongoose
+} = require('../db/mongoose');
+let {
+    MongooseAutoIncrementID
+} = require('mongoose-auto-increment-reworked');
 
 var orderSchema = new mongoose.Schema({
     faculty: {
@@ -13,12 +18,23 @@ var orderSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    processedAt: {
+        type: Date
+    },
+    confirmedAt: {
+        type: Date
     }
 });
 
 //Todo: complete it with passport or jwt
-orderSchema.methods.findOrderByFacId = function(token) {
+orderSchema.methods.findOrderByFacId = function (token) {
 
 };
+
+orderSchema.plugin(MongooseAutoIncrementID.plugin, {
+    modelName: "order",
+    field: "orderId"
+});
 
 module.exports = mongoose.model("order", orderSchema);

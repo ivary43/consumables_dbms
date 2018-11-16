@@ -109,6 +109,7 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
                 });
             }
             order.status = "PROCESSED";
+            order.processedAt = new Date();
             await order.save();
             flagOrderSave = true;
             var notifText = "Your Order No. " + order._id + " has been processed on " + (new Date().toLocaleDateString());

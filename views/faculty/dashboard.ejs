@@ -28,13 +28,19 @@
                     <table id="allTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>Sr No.</th>
+                                <!-- <th>Sr No.</th> -->
                                 <th>Order No.</th>
+                                <!-- <th>Order Summary</th> -->
                                 <th>Created At</th>
+                                <th>Processed At</th>
+                                <th>Confirmed At</th>
                                 <% if(user.isAdmin) {%>
                                 <th>Order By</th>
                                 <%}%>
                                 <th>Status</th>
+                                <% if(!user.isAdmin) {%>
+                                <th>Confirm Delivery</th>
+                                <%}%>
                                 <% if(!user.isAdmin) {%>
                                 <th>Delete</th>
                                 <%}%>
@@ -45,15 +51,18 @@
                             <%  orders.forEach((order) => { %>
                             <tr>
                                 <td>
-                                    <%= ++v %>
-                                </td>
-                                <td>
                                     <a href="/order/<%= order._id %>">
-                                        <%= order._id %>
+                                        <%= order.orderId %>
                                     </a>
                                 </td>
                                 <td>
-                                    <%= order.createdAt %>
+                                    <%= order.createdAt.toLocaleDateString() %>
+                                </td>
+                                <td>
+                                    <%= order.processedAt ? order.processedAt.toLocaleDateString() : "" %>
+                                </td>
+                                <td>
+                                    <%= order.confirmedAt ? order.createdAt.toLocaleDateString() : "" %>
                                 </td>
                                 <% if(user.isAdmin){%>
                                 <td>
@@ -63,6 +72,18 @@
                                 <td>
                                     <%= order.status %>
                                 </td>
+                                <% if(!user.isAdmin && order.status === 'PROCESSED') {%>
+                                    <td>
+                                        <button class="btn btn-success btn-md" onclick="confirmPressed('<%= order._id %>')">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                    </td>
+                                    <%}%>
+                                    <% if(!user.isAdmin && order.status !== 'PROCESSED') {%>
+                                    <td>
+                                       
+                                    </td>
+                                <%}%>
                                 <% if(!user.isAdmin && order.status !== 'PROCESSED') {%>
                                 <td>
                                     <button class="btn btn-danger btn-md" onclick="deletePressed('<%= order._id %>')">
@@ -192,7 +213,7 @@
 
         </div>
 
-        <% if (!user.isAdmin) { %>
+        <!-- <% if (!user.isAdmin) { %>
 
         <div class="row">
 
@@ -242,7 +263,7 @@
 
         </div>
 
-        <% } %>
+        <% } %> -->
     </div>
 
 <% include ../partials/footer %>
