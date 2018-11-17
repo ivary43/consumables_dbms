@@ -39,7 +39,8 @@ $(document).ready(function () {
         "scrollY": "70vh",
         "scrollCollapse": true,
         "searching": false,
-        "pageLength": 50
+        "pageLength": 50,
+        "aaSorting": [[ 2, "desc" ]]
     });
 
     $('.dataTables_length').addClass('bs-select');
