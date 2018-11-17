@@ -33,7 +33,7 @@ router.get("/view", isLoggedIn, (req, res) => {
     }).then((bills) => {
         res.render("bills/view_bills", {
             user: req.user,
-            bills
+            bills: bills
         });
     }, (err) => {
         res.send({

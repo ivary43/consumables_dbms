@@ -33,7 +33,7 @@ router.post('/', isLoggedIn, async (req, res) => {
             });
 
             newOrder.save()
-                .then((orderRes) => {
+                .then(async (orderRes) => {
                     for (index = 0; index < orderItemsres.length; index++) {
                         var newOrderItem = new OrderItem({
                             order: orderRes._id,
