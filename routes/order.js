@@ -168,8 +168,8 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
             console.log(err);
         } else {
             mailProcessedOption = createOrderProcessedMailOption(req.user.email, process_order_id, data);
-            console.log(mailProcessedOption);
-            console.log(mailer.transporter);
+            // console.log(mailProcessedOption);
+            // console.log(mailer.transporter);
             mailer.transporter.sendMail(mailProcessedOption, (error, info) => {
                 if (error) {
                     return console.log(error);

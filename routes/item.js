@@ -8,7 +8,8 @@ var isLoggedIn = require("../middleware/isLoggedIn");
 router.get('/', isLoggedIn, (req, res) => {
     Item.find().then((items) => {
         res.render("item/orderItem", {
-            items:items
+            items:items,
+            user: req.user
         });
     }, (err) => {
         res.status(400).send({

@@ -9,6 +9,8 @@ const logger = require('morgan');
 const  passport_config = require('./config/passport_config');
 const fileUpload = require('express-fileupload');
 var flash = require('connect-flash');
+const rimraf = require('rimraf');
+var cron = require('node-cron');
 
 let faculty = require("./routes/faculty");
 let item = require("./routes/item");
@@ -57,7 +59,7 @@ app.use("/bills", bills);
 app.use(function (req, res, next) {
     res.status(404);
     // respond with html page
-    res.render('error/error_404', { url: req.url });
+    res.render('error/error_404', { url: req.url,user: req.user });
     // res.send("no");
     return;
   });
@@ -68,4 +70,11 @@ const listenPort = process.env.PORT  || env_vars.PORT_NUMBER ;
 //server setup
 app.listen(listenPort, ()=>{
     console.log('The server is running at :', listenPort);
+});
+
+//cron job to clear clutter
+cron.schedule('24 58 3 * * *', ()=> {
+    rimraf('files/*.pdf',(err)=> {
+        console.log(err);
+    });
 });
