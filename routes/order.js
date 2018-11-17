@@ -22,6 +22,7 @@ router.post('/', isLoggedIn, (req, res) => {
     var qty = req.body.qty;
     var id = req.body.id;
     var name = req.body.name;
+    var specialRequest = req.body.specialRequest;
 
     console.log(qty, id, name);
 
@@ -30,7 +31,8 @@ router.post('/', isLoggedIn, (req, res) => {
     Faculty.findById(req.user._id)
         .then(fac => {
             var newOrder = new Order({
-                faculty: fac
+                faculty: fac,
+                specialRequest: specialRequest
             });
 
             newOrder.save()
@@ -122,7 +124,7 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
     let itemIdArr = [].concat(req.body.itemId);
     let itemNameArr = [].concat(req.body.itemName);
     let orderProcessed = serializeParams(itemIdArr, quantitySuppliedArr, itemNameArr);
-
+    let specialRequestRemark = req.body.specialRequestRemark;
     let flagOrderSave = false;
     console.log(req.body);
     var process_order_id;
@@ -136,6 +138,7 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
                 });
             }
             order.status = "PROCESSED";
+            order.specialRequestRemark = specialRequestRemark;
             order.processedAt = new Date();
             await order.save();
             flagOrderSave = true;

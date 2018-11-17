@@ -1,12 +1,14 @@
-<% include ../partials/header %> 
+<% include ../partials/header %>
 <div style="margin-top: 25px" class="container">
-    
+
     <div class="row">
-        
+
         <div class="col-md-12">
-            <h1 class="text-center">Orders Details for <%= order._id %> </h1>
-        </div>     
-        
+            <h1 class="text-center">Orders Details for
+                <%= order._id %>
+            </h1>
+        </div>
+
     </div>
 
     <form action="/order/process" method="post">
@@ -18,39 +20,68 @@
                         <th>Item Name</th>
                         <th>Quantity Requested</th>
                         <% if (user.isAdmin) { %>
-                            <th>Inventory</th>
-                        <% } %>   
+                        <th>Inventory</th>
+                        <% } %>
                         <th>Quantity Supplied</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% items.forEach((item, i) => { %>
                     <tr>
-                            <td><%= (i + 1) %> </td>
-                            <td><%= item.item.name %></td>
-                            <td><%= item.quantity %> </td>
-                            <% if (user.isAdmin) { %>
-                                <td><%= item.item.quantity %></td>
-                                <td><input type="number" class="form-control" name="quantitySupplied" min="0" value="<%= item.quantitySupplied %>" max="<%= Math.min(item.item.quantity, item.quantity) %>" <%= order.status === 'PROCESSED' ? 'disabled' : '' %>></td>
-                                <input type="hidden" name="itemId" value="<%= item._id %>">
-                                <input type="hidden" name="itemName" value="<%= item.item.name %>">
-                            <% } else { %> 
-                                <td><%= item.quantitySupplied %></td>
-                            <% } %>
-                        </tr>
-                    <% }) %>            
+                        <td>
+                            <%= (i + 1) %>
+                        </td>
+                        <td>
+                            <%= item.item.name %>
+                        </td>
+                        <td>
+                            <%= item.quantity %>
+                        </td>
+                        <% if (user.isAdmin) { %>
+                        <td>
+                            <%= item.item.quantity %>
+                        </td>
+                        <td><input type="number" class="form-control" name="quantitySupplied" min="0" value="<%= item.quantitySupplied %>"
+                                max="<%= Math.min(item.item.quantity, item.quantity) %>" <%=order.status==='PROCESSED'
+                                ? 'disabled' : '' %>></td>
+                        <input type="hidden" name="itemId" value="<%= item._id %>">
+                        <input type="hidden" name="itemName" value="<%= item.item.name %>">
+                        <% } else { %>
+                        <td>
+                            <%= item.quantitySupplied %>
+                        </td>
+                        <% } %>
+                    </tr>
+                    <% }) %>
                 </tbody>
             </table>
 
-          <% if (user.isAdmin && order.status !== "PROCESSED") { %>
+
             <div class="row">
+
+                <div class="col-md-6">
+                    <label for="spreq">Special Request</label>
+                    <textarea class="form-control" name="specialRequest" id="spreq" rows="5" placeholder="Add your special request here" disabled><%= order.specialRequest %></textarea>
+                </div>
+
+
+                <div class="col-md-6">
+                    <label for="spreq">Remarks</label>
+                    <textarea class="form-control" name="specialRequestRemark" id="spreq" rows="5" placeholder="Remarks" <%= (user.isAdmin || order.status !=='PENDING') ? 'disabled' : '' %>><%= order.specialRequestRemark %></textarea>
+                </div>
+
+            </div>
+
+
+            <% if (user.isAdmin && order.status !== "PROCESSED") { %>
+            <div class="row" style="margin-top: 25px">
                 <div class="col-12 text-center">
                     <button type="submit" class="btn btn-primary" class="align-middle">Submit</button>
-                </div>    
-            </div>   
-            <% }  %>   
+                </div>
+            </div>
+            <% }  %>
         </div>
-    </form>    
+    </form>
 </div>
 
-<% include ../partials/footer %> 
+<% include ../partials/footer %>

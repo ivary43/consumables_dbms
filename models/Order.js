@@ -24,6 +24,13 @@ var orderSchema = new mongoose.Schema({
     },
     confirmedAt: {
         type: Date
+    },
+    specialRequest: {
+        type: String,
+        default: "-"
+    },
+    specialRequestRemark: {
+        type: String
     }
 });
 
