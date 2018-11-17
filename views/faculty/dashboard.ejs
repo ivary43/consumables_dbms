@@ -19,6 +19,7 @@
             <li class="active take-all-space-you-can"><a data-toggle="tab" href="#all">All</a></li>
             <li class="take-all-space-you-can"><a data-toggle="tab" href="#pending">Pending</a></li>
             <li class="take-all-space-you-can"><a data-toggle="tab" href="#processed">Processed</a></li>
+            <li class="take-all-space-you-can"><a data-toggle="tab" href="#delivered">Delivered</a></li>
         </ul>
 
         <div class="tab-content">
@@ -65,13 +66,13 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    <%= order.createdAt.toLocaleDateString() %>
+                                    <%= order.createdAt.toLocaleString() %>
                                 </td>
                                 <td>
-                                    <%= order.processedAt ? order.processedAt.toLocaleDateString() : "" %>
+                                    <%= order.processedAt ? order.processedAt.toLocaleString() : "" %>
                                 </td>
                                 <td>
-                                    <%= order.confirmedAt ? order.createdAt.toLocaleDateString() : "" %>
+                                    <%= order.confirmedAt ? order.createdAt.toLocaleString() : "" %>
                                 </td>
                                 <% if(user.isAdmin){%>
                                 <td>
@@ -156,13 +157,13 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    <%= order.createdAt.toLocaleDateString() %>
+                                    <%= order.createdAt.toLocaleString() %>
                                 </td>
                                 <td>
-                                    <%= order.processedAt ? order.processedAt.toLocaleDateString() : "" %>
+                                    <%= order.processedAt ? order.processedAt.toLocaleString() : "" %>
                                 </td>
                                 <td>
-                                    <%= order.confirmedAt ? order.createdAt.toLocaleDateString() : "" %>
+                                    <%= order.confirmedAt ? order.createdAt.toLocaleString() : "" %>
                                 </td>
                                 <% if(user.isAdmin){%>
                                 <td>
@@ -249,13 +250,106 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    <%= order.createdAt.toLocaleDateString() %>
+                                    <%= order.createdAt.toLocaleString() %>
                                 </td>
                                 <td>
-                                    <%= order.processedAt ? order.processedAt.toLocaleDateString() : "" %>
+                                    <%= order.processedAt ? order.processedAt.toLocaleString() : "" %>
                                 </td>
                                 <td>
-                                    <%= order.confirmedAt ? order.createdAt.toLocaleDateString() : "" %>
+                                    <%= order.confirmedAt ? order.createdAt.toLocaleString() : "" %>
+                                </td>
+                                <% if(user.isAdmin){%>
+                                <td>
+                                    <%= order.faculty.name %>
+                                </td>
+                                <%}%>
+                                <td>
+                                    <%= order.status %>
+                                </td>
+                                <% if(!user.isAdmin && order.status === 'PROCESSED') {%>
+                                    <td>
+                                        <button class="btn btn-success btn-md" onclick="confirmPressed('<%= order._id %>')">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                    </td>
+                                    <%}%>
+                                    <% if(!user.isAdmin && order.status !== 'PROCESSED') {%>
+                                    <td>
+                                       
+                                    </td>
+                                <%}%>
+                                <% if(!user.isAdmin && order.status === 'PENDING') {%>
+                                <td>
+                                    <button class="btn btn-danger btn-md" onclick="deletePressed('<%= order._id %>')">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </td>
+                                <%}%>
+                                <% if(!user.isAdmin && order.status !== 'PENDING') {%>
+                                <td>
+                                   
+                                </td>
+                                <%}%>
+                            </tr>
+                            <%} %>
+
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- processed-->
+            <div id="delivered" class="tab-pane fade in" style="margin-top:25px">
+                <div class="row">
+                    <table id="deliveredTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                 <!-- <th>Sr No.</th> -->
+                                 <th>Order No.</th>
+                                 <th>Order Summary</th>
+                                 <th>Created At</th>
+                                 <th>Processed At</th>
+                                 <th>Confirmed At</th>
+                                 <% if(user.isAdmin) {%>
+                                 <th>Order By</th>
+                                 <%}%>
+                                 <th>Status</th>
+                                 <% if(!user.isAdmin) {%>
+                                 <th>Confirm Delivery</th>
+                                 <%}%>
+                                 <% if(!user.isAdmin) {%>
+                                 <th>Delete</th>
+                                 <%}%>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% v=0 %>
+                            <% orders.forEach((order) => { %>
+                            <% if(order.status === 'DELIVERED') {%>
+                            <tr>
+                                <td>
+                                    <a href="/order/<%= order._id %>">
+                                        <%= order.orderId %>
+                                    </a>
+                                </td>
+                                <td>
+                                    <ul>
+                                       <% orderDetails[order._id].forEach(item => { %>
+                                            <li>
+                                                <%= item.item.name %> 
+                                            </li>
+                                       <% }) %>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <%= order.createdAt.toLocaleString() %>
+                                </td>
+                                <td>
+                                    <%= order.processedAt ? order.processedAt.toLocaleString() : "" %>
+                                </td>
+                                <td>
+                                    <%= order.confirmedAt ? order.createdAt.toLocaleString() : "" %>
                                 </td>
                                 <% if(user.isAdmin){%>
                                 <td>
