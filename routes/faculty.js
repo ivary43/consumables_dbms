@@ -125,7 +125,6 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
                     .then(orderItems => {
 
                         orderItems.forEach(orderItem => {
-                            console.log(orderItem.order);
                             if(!_.has(orderDetails, orderItem.order)) {
                                 orderDetails[orderItem.order] = [];
                             }
@@ -168,7 +167,6 @@ router.get('/dashboard', isLoggedIn, (req, res) => {
                     .then(orderItems => {
 
                         orderItems.forEach(orderItem => {
-                            console.log(orderItem.order);
                             if(!_.has(orderDetails, orderItem.order)) {
                                 orderDetails[orderItem.order] = [];
                             }
