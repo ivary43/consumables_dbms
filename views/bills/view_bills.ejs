@@ -1,6 +1,7 @@
 <% include ../partials/header %>
 <div class="container">
- <div class="row">
+       
+ <div class="row" style="margin-top: 29px">
         <table class ="table table-striped table-bordered table-hover">
                      <thead>
                         <tr>
@@ -9,6 +10,7 @@
                             <th>Topic</th>
                             <th>Description</th>
                             <th>File Name</th>
+                            <th>View</th>
                         </tr>
                     </thead> 
                     
@@ -21,6 +23,11 @@
                                 <td> <%= bill.topic %> </td>
                                 <td> <%= bill.description %> </td>
                                 <td> <%= bill.fileName %> </td>
+                                <td>   <form action="/bills/download" method="POST"> 
+                                    <input type="hidden" class="form-control"  name="id" value="<%= bill.id %>">
+                                    <button type="submit" ><i class="fa fa-download"></i></button>
+                                </form> </td>
+                                 
                              </tr>   
                            <% i++;}) %>
                         </tbody>
