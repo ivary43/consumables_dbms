@@ -11,11 +11,11 @@ var Notification = require("../models/Notification");
 var isLoggedIn = require("../middleware/isLoggedIn");
 
 //TODO: 1) Only the admin should be able to register other faculties
-//      2) Check for duplicate entries and give error accordingly
 router.post('/register', (req, res) => {
     var name = req.body.name;
     var user = req.body.username;
     var password = req.body.password;
+    var email = req.body.email;
 
     Faculty.findOne({
             username: user
@@ -28,7 +28,8 @@ router.post('/register', (req, res) => {
             } else {
                 Faculty.register(new Faculty({
                     username: user,
-                    name: name
+                    name: name,
+                    email: email
                 }), password, (err, account) => {
                     if (err) {
                         console.log(err);

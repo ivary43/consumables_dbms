@@ -28,7 +28,8 @@ app.use(flash());
 app.use(require('express-session')({
     secret: env_vars.secretCode,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {_expires: 24 * 60 * 60 * 1000}
 }));
 
 
