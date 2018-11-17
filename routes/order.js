@@ -16,9 +16,8 @@ var isAdmin = require("../middleware/isAdmin");
 // UTIL METHODS
 var asyncForEach = require("../Utils/AsyncForEach");
 
-var placedOrderId;
 //to place an order
-router.post('/', isLoggedIn, (req, res) => {
+router.post('/', isLoggedIn, async (req, res) => {
     var qty = req.body.qty;
     var id = req.body.id;
     var name = req.body.name;
@@ -37,7 +36,6 @@ router.post('/', isLoggedIn, (req, res) => {
 
             newOrder.save()
                 .then((orderRes) => {
-                    placedOrderId = orderRes._id;
                     for (index = 0; index < orderItemsres.length; index++) {
                         var newOrderItem = new OrderItem({
                             order: orderRes._id,
@@ -45,8 +43,7 @@ router.post('/', isLoggedIn, (req, res) => {
                             quantity: Number(orderItemsres[index].qty)
                         });
 
-                        newOrderItem.save();
-
+                        await newOrderItem.save();
                     }
                     let mailOptions = createOrderRegisteredMailOption(req.user.email);
                     console.log(mailOptions);
