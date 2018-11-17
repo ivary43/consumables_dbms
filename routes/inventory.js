@@ -26,42 +26,23 @@ router.get("/", isLoggedIn, isAdmin, (req, res) => {
     });
 });
 
-router.post("/", isLoggedIn, isAdmin, (req, res) => {
-    let ids = req.body.id;
-    let quantities = req.body.qty;
+router.post("/", isLoggedIn, isAdmin, async (req, res) => {
+    let ids = [].concat(req.body.id);
+    // let quantities = [].concat(req.body.qty);
+    let updateBy = [].concat(req.body.updateby);
     let processed = 0;
-    for (let i = 0; i < ids.length; ++i) {
-        Item.findByIdAndUpdate(ids[i], {
-            $set: {
-                quantity: quantities[i]
-            }
-        }, {
-            new: true
-        }).then((doc) => {
-            if (doc) {
-                processed++;
-            }
 
-            if (processed === ids.length && i === ids.length - 1) {
-                res.redirect("/inventory");
-            } else if (processed !== ids.length && i === ids.length - 1) {
-                res.status(400).send({
-                    message: "Error while updating"
-                });
-            }
-        }).catch((err) => {
-            console.log(err);
-            res.status(400).send({
-                message: "Error while updating"
-            });
-        })
-    }
+    await asyncForEach(ids, async (id, i) => {
+        let item = await Item.findById(id);
+        item.quantity = Number(item.quantity) + Number(updateBy[i]);
+        await item.save();
+    });
+
+    res.redirect("/inventory");
 })
 
 router.post("/add", isLoggedIn, isAdmin, async (req, res) => {
     let items = serialiseParams([].concat(req.body.name), [].concat(req.body.qty));
-
-    console.log(items);
 
     await asyncForEach(items, async (item, i) => {
         let newItem = new Item({

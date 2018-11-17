@@ -17,6 +17,7 @@
                 <tr>
                     <th>Item</th>
                     <th>Quantity</th>
+                    <th>Update By</th>
                 </tr>
             </thead>
 
@@ -25,7 +26,8 @@
                 
                  <tr>
                     <td> <%= item.name %> </td>
-                    <td> <input type="number" class="form-control" min="0" name="qty" value="<%= item.quantity %>"></td>
+                    <td> <input type="number" class="form-control" min="0" name="qty" value="<%= item.quantity %>" disabled></td>
+                    <td> <input type="number" name="updateby" min="-<%= item.quantity %>" value=0 ></td>
                     <input type="hidden" class="form-control"  name="id" value="<%= item.id %>">
                  </tr>   
                <% i++;}) %>
