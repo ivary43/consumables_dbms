@@ -13,7 +13,7 @@ const env_vars = require('./Constants');
         auth: {
             user: 'manish.cs16@iitp.ac.in', // generated ethereal user
            // pass: jsonPass.password// generated ethereal password
-           pass:process.env.mail_pass
+          pass:process.env.mail_pass
         }
     });
 

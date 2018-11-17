@@ -120,6 +120,7 @@ router.post("/:id/confirm", isLoggedIn, (req, res) => {
 
 // to update the order {User -> admin} 
 router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
+   
     let quantitySuppliedArr = [].concat(req.body.quantitySupplied);
     let itemIdArr = [].concat(req.body.itemId);
     let itemNameArr = [].concat(req.body.itemName);
@@ -128,8 +129,10 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
     let flagOrderSave = false;
     console.log(req.body);
     var process_order_id;
+    var facId = "";
     await asyncForEach(quantitySuppliedArr, async (quantitySupplied, i) => {
         let orderItem = await OrderItem.findById(itemIdArr[i]);
+        
         if (!flagOrderSave) {
             let order = await Order.findById(orderItem.order);
             if (order.status === "PROCESSED") {
@@ -140,6 +143,7 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
             order.status = "PROCESSED";
             order.specialRequestRemark = specialRequestRemark;
             order.processedAt = new Date();
+            facId= order.faculty ;
             await order.save();
             flagOrderSave = true;
             var notifText = "Your Order No. " + order._id + " has been processed on " + (new Date().toLocaleDateString());
@@ -158,7 +162,7 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
         await item.save();
     });
 
-
+    let faculty = await Faculty.findById(facId);
 
     //render the html file
     ejs.renderFile(__dirname + "/../views/template/mail_template.ejs", {
@@ -167,7 +171,7 @@ router.post("/process", isLoggedIn, isAdmin, async (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            mailProcessedOption = createOrderProcessedMailOption(req.user.email, process_order_id, data);
+            mailProcessedOption = createOrderProcessedMailOption(faculty.email, process_order_id, data);
             // console.log(mailProcessedOption);
             // console.log(mailer.transporter);
             mailer.transporter.sendMail(mailProcessedOption, (error, info) => {
