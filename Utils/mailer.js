@@ -9,7 +9,7 @@ const env_vars = require('./Constants');
     var transporter = nodemailer.createTransport({
         host: env_vars.host,
         port: env_vars.smtpPort,
-        secure: false, // true for 465, false for other ports
+        secure: true, // true for 465, false for other ports
         auth: {
             user: 'manish.cs16@iitp.ac.in', // generated ethereal user
            // pass: jsonPass.password// generated ethereal password
