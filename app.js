@@ -18,6 +18,7 @@ let order = require("./routes/order");
 let orderItem = require("./routes/orderItem");
 let inventory = require("./routes/inventory");
 let bills = require("./routes/bills");
+let history = require("./routes/history");
 
 let app = express();
 app.use(body_parser.urlencoded({extended: false}));
@@ -55,6 +56,7 @@ app.use("/orderItem", orderItem);
 app.use("/item", item);
 app.use("/inventory", inventory);
 app.use("/bills", bills);
+app.use("/history", history);
 
 //404
 app.use(function (req, res, next) {

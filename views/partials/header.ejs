@@ -37,7 +37,7 @@
             <% if (typeof user !== 'undefined' && user.isAdmin) { %>
               <li><a href="/inventory">Inventory</a></li>
             <% } else if (typeof user !== 'undefined') { %>
-              <li><a href="/item">New Order</a></li>
+              <li style="background:#00FA9A;"><a href="/item">New Order</a></li>
             <% } %>
           </ul>
     
@@ -58,12 +58,19 @@
               <li><a href="/bills/view">View Bills</a></li>
             <% } %>
           </ul>
+
+   
           
           <ul class="nav navbar-nav navbar-right">
             <% if (typeof user !== 'undefined') { %>
-              <li><a href="/logout">Log out</a></li>
+              <li ><a href="/logout">Log out</a></li>
             <% } else { %>
               <li><a href="/login">Log in</a></li>
+            <% } %>
+          </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <% if (typeof user !== 'undefined' && user.isAdmin) { %>
+              <li><a href="/history">History(Inventory)</a></li>
             <% } %>
           </ul>
         </div><!-- /.navbar-collapse -->

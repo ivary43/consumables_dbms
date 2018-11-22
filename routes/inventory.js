@@ -1,5 +1,6 @@
 let router = require("express").Router();
 var Item = require('../models/Item');
+var ItemHistory = require('../models/ItemHistory');
 var isLoggedIn = require("../middleware/isLoggedIn");
 let _ = require("lodash");
 var Notification = require("../models/Notification");
@@ -34,8 +35,19 @@ router.post("/", isLoggedIn, isAdmin, async (req, res) => {
 
     await asyncForEach(ids, async (id, i) => {
         let item = await Item.findById(id);
+        if(updateBy[i]!=="0"){
+            let itemHistory = new ItemHistory({
+                name: item.name,
+                curr_quantity:item.quantity,
+                updatedBy:updateBy[i],
+                item_id:id
+            });
+            await itemHistory.save();
+        } 
+      
         item.quantity = Number(item.quantity) + Number(updateBy[i]);
         await item.save();
+        
     });
 
     res.redirect("/inventory");
@@ -61,9 +73,7 @@ router.post("/add", isLoggedIn, isAdmin, async (req, res) => {
         await newNotification.save();
     });
 
-    res.status(200).send({
-        msg: "OK"
-    });
+    res.redirect("/inventory");
 });
 
 function serialiseParams(name, qty) {
