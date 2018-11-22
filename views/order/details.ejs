@@ -42,8 +42,8 @@
                             <%= item.item.quantity %>
                         </td>
                         <td><input type="number" class="form-control" name="quantitySupplied" min="0" value="<%= item.quantitySupplied %>"
-                                max="<%= Math.min(item.item.quantity, item.quantity) %>" <%=order.status==='PROCESSED'
-                                ? 'disabled' : '' %>></td>
+                                max="<%= Math.min(item.item.quantity, item.quantity) %>" <%= order.status ==='PENDING'
+                                ? '' : 'disabled' %>></td>
                         <input type="hidden" name="itemId" value="<%= item._id %>">
                         <input type="hidden" name="itemName" value="<%= item.item.name %>">
                         <% } else { %>
@@ -67,7 +67,7 @@
 
                 <div class="col-md-6">
                     <label for="spreq">Remarks</label>
-                    <textarea class="form-control" name="specialRequestRemark" id="spreq" rows="5" placeholder="Remarks" <%= (user.isAdmin || order.status !=='PENDING') ? 'disabled' : '' %>><%= order.specialRequestRemark %></textarea>
+                    <textarea class="form-control" name="specialRequestRemark" id="spreq" rows="5" placeholder="Remarks" <%= (!user.isAdmin || order.status !=='PENDING') ? 'disabled' : '' %>><%= order.specialRequestRemark %></textarea>
                 </div>
 
             </div>
