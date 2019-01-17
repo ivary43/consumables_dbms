@@ -18,11 +18,12 @@ var asyncForEach = require("../Utils/AsyncForEach");
 
 //to place an order
 router.post('/', isLoggedIn, async (req, res) => {
-    var qty = req.body.qty;
-    var id = req.body.id;
-    var name = req.body.name;
+    var qty = [].concat(req.body.qty);
+    var id = [].concat(req.body.id);
+    var name = [].concat(req.body.name);
     var specialRequest = req.body.specialRequest;
     var facId = -1;
+
     if (req.user.isAdmin) {
         facId = req.body.faculty;
     } else {
