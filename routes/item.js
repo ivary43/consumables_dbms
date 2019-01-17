@@ -1,4 +1,5 @@
 var Item = require('../models/Item');
+var Faculty = require("../models/Faculty");
 let router = require("express").Router();
 
 // MIDDLEWARES
@@ -7,10 +8,21 @@ var isLoggedIn = require("../middleware/isLoggedIn");
 //to fetch the items while ordering
 router.get('/', isLoggedIn, (req, res) => {
     Item.find().then((items) => {
-        res.render("item/orderItem", {
-            items:items,
-            user: req.user
-        });
+        if (req.user.isAdmin) {
+            Faculty.find()
+            .then((faculties) => {
+                res.render("item/orderItem", {
+                    items: items,
+                    user: req.user,
+                    faculties: faculties
+                });
+            });
+        } else {
+            res.render("item/orderItem", {
+                items: items,
+                user: req.user
+            });
+        }
     }, (err) => {
         res.status(400).send({
             errorMsg: env_vars.errMsg

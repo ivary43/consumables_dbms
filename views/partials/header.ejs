@@ -34,15 +34,16 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <% if (typeof user !== 'undefined' && user.isAdmin) { %>
-              <li><a href="/inventory">Inventory</a></li>
-            <% } else if (typeof user !== 'undefined') { %>
+          <% if (typeof user !== 'undefined') { %>
               <li style="background:#00FA9A;"><a href="/item">New Order</a></li>
+            <% } %>  
+          <% if (typeof user !== 'undefined' && user.isAdmin) { %>
+              <li><a href="/inventory">Inventory</a></li>
             <% } %>
           </ul>
     
           <ul class="nav navbar-nav navbar-center">
-            <% if (typeof user !== 'undefined') { %>
+            <% if (typeof user !== 'undefined' && !user.isAdmin) { %>
             <li><a href="#">Hello, <%= user.name %> </a></li>
             <% } %>
           </ul>

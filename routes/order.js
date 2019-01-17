@@ -22,15 +22,26 @@ router.post('/', isLoggedIn, async (req, res) => {
     var id = req.body.id;
     var name = req.body.name;
     var specialRequest = req.body.specialRequest;
+    var facId = -1;
+    if (req.user.isAdmin) {
+        facId = req.body.faculty;
+    } else {
+        facId = req.user._id;
+    }
 
     // console.log(req.body.id);
     var orderItemsres = serializeParams(id, qty, name);
-    Faculty.findById(req.user._id)
+    Faculty.findById(facId)
         .then(fac => {
             var newOrder = new Order({
                 faculty: fac,
                 specialRequest: specialRequest
             });
+
+            if (req.user.isAdmin) {
+                newOrder.status = "DELIVERED";
+                newOrder.confirmedAt = new Date();
+            }
 
             newOrder.save()
                 .then(async (orderRes) => {

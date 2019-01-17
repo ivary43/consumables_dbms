@@ -33,6 +33,7 @@ $(document).ready(function () {
             visible: true,
             api: true
         }).columns.adjust();
+        $.fn.dataTable.moment("mm/dd/yyyy, HH:mm:ss");
     });
 
     $('table.table').DataTable({
@@ -40,7 +41,7 @@ $(document).ready(function () {
         "scrollCollapse": true,
         "searching": false,
         "pageLength": 50,
-        "aaSorting": [[ 2, "desc" ]]
+        "aaSorting": [[ 0, "desc" ]]
     });
 
     $('.dataTables_length').addClass('bs-select');
