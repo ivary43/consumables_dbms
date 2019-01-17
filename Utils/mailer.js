@@ -11,9 +11,9 @@ const env_vars = require('./Constants');
         port: env_vars.smtpPort,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: 'manish.cs16@iitp.ac.in', // generated ethereal user
+            user: process.env.consumables_email, // generated ethereal user
            // pass: jsonPass.password// generated ethereal password
-          pass:process.env.mail_pass
+          pass:process.env.consumables_mail_pass
         }
     });
 

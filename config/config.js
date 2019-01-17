@@ -1,5 +1,5 @@
-const  username = 'manishk16';
-const pass = 'qwerty12';
+const  username = '';
+const pass = '';
 
 module.exports = {
     username,
